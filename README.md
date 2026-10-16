@@ -143,11 +143,12 @@ The Etherscan-compatible module answers in Etherscan's own envelope instead, wit
 Limits apply per client IP address, and per `/64` prefix for IPv6:
 
 - Each client has a bucket of 120 requests, refilled at 10 requests per second. A client can burst to 120 requests and then sustain 10 per second.
-- At most 8 of a client's requests run at once. Further requests wait in a queue rather than fail.
+- At most 4 of a client's requests run at once. Further requests wait in a queue rather than fail.
+- Calls to the [Etherscan-compatible module](docs/etherscan-compatible.md) at `/api` run at most 4 at a time for the whole deployment, whoever sends them, with a short queue behind them. Send them one at a time rather than in parallel.
 - [`GET /v1/export`](docs/addresses.md#csv-export) is limited to 10 requests per 10 minutes per client.
 - [Contract reads](docs/contracts.md#read-a-contract-function) are limited to 30 per minute per client, and 300 per minute for the whole deployment.
 
-A request over a limit gets `429 Too Many Requests` with a problem-details body whose `title` is `Too many requests`. When the limit knows how long to wait, the response carries a `Retry-After` header in seconds and the `detail` names the same wait. Wait at least that long before retrying.
+A request over a limit gets `429 Too Many Requests` with a problem-details body whose `title` is `Too many requests`. When the limit knows how long to wait, the response carries a `Retry-After` header in seconds and the `detail` names the same wait. Wait at least that long before retrying. A request refused because the deployment is too busy to queue it carries no `Retry-After`; wait a few seconds and retry.
 
 ## Caching
 

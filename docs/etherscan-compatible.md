@@ -75,7 +75,7 @@ Response `200`
 }
 ```
 
-A request over the [rate limit](../README.md#rate-limits) gets HTTP `429` with the Etherscan envelope and a `result` that begins `Max rate limit reached`.
+A request over the [rate limit](../README.md#rate-limits) gets HTTP `429` with the Etherscan envelope and a `result` that begins `Max rate limit reached`. Calls to this module run at most 4 at a time for the whole deployment, whoever sends them, so send them one at a time rather than in parallel.
 
 ## Supported actions
 
