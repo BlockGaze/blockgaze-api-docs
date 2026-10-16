@@ -42,7 +42,18 @@ curl "https://fsnex.net/api/v1/blocks/15130080"
 curl "https://bnb.blockgaze.com/api/v1/transactions?pageSize=10"
 ```
 
-The API does not accept cross-origin requests from other websites, so a browser page on your own domain cannot call it directly. Call it from a server, a script or a command-line tool.
+The API does not accept cross-origin requests from other websites, so a browser page on your own domain cannot call it directly. Call it from a server, a script or a command-line tool. The one exception is the OpenAPI document below, which any website may read.
+
+## OpenAPI documents
+
+Each deployment generates an OpenAPI 3.1 document from its own endpoints, so it always matches what that deployment serves, including its chain-specific endpoints, and serves it as a Swagger UI page where you can send each request from your browser with "Try it out":
+
+| Deployment | Try the API | OpenAPI document |
+| --- | --- | --- |
+| FSNEX | [`https://fsnex.net/api/swagger/`](https://fsnex.net/api/swagger/) | [`https://fsnex.net/api/openapi/v1.json`](https://fsnex.net/api/openapi/v1.json) |
+| BNB Smart Chain | [`https://bnb.blockgaze.com/api/swagger/`](https://bnb.blockgaze.com/api/swagger/) | [`https://bnb.blockgaze.com/api/openapi/v1.json`](https://bnb.blockgaze.com/api/openapi/v1.json) |
+
+Use the document to generate a client in your language. The document states every route's parameters, defaults, page-size limits, response shapes and the problem-details responses the route itself gives; any route can also answer `429` under the [rate limits](#rate-limits), or `400` when a parameter does not parse. These pages explain what the fields mean. The [Etherscan-compatible module](docs/etherscan-compatible.md) is not in the document, since it takes its action as a parameter rather than as a route.
 
 ## Endpoints
 
