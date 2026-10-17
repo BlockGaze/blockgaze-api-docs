@@ -24,7 +24,7 @@ Every endpoint on this page returns `400` when `address` is not a 20-byte addres
 
 `GET /v1/addresses`
 
-Addresses by native balance, largest first, with each balance's share of the supply in `shares`. `amountColumns` adds chain-specific amounts per address in the same order; on FSNEX these are the FSN time-locked forever and the FSN staked in tickets.
+Addresses by native balance, largest first, with each address's `label` and `tags` and each balance's share of the supply in `shares`. Tags are those [Get an address](#get-an-address) lists, in the same order and shape; an untagged address has an empty list. `amountColumns` adds chain-specific amounts per address in the same order; on FSNEX these are the FSN time-locked forever and the FSN staked in tickets.
 
 | Parameter | Default | Description |
 | --- | --- | --- |

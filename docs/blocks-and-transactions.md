@@ -11,7 +11,7 @@
 
 `GET /v1/blocks`
 
-Blocks, newest first, with producer, gas, transaction count, fees and reward.
+Blocks, newest first, with producer, gas, transaction count, fees and reward. `minerLabel` and `minerTags` give the producer's label and tags. Tags are those [Get an address](addresses.md#get-an-address) lists, in the same order and shape; an untagged address has an empty list.
 
 | Parameter | Default | Description |
 | --- | --- | --- |
@@ -64,7 +64,7 @@ Response `200`
 
 `GET /v1/blocks/{numberOrHash}`
 
-One block by number or by hash, with its header fields, fees, issuance and reward. `annotations` carries chain-specific notes recorded with the block, such as the Fusion ticket snapshot below.
+One block by number or by hash, with its header fields, fees, issuance and reward. `minerLabel` and `minerTags` give the producer's label and tags, as in [List blocks](#list-blocks). `annotations` carries chain-specific notes recorded with the block, such as the Fusion ticket snapshot below.
 
 | Parameter | Description |
 | --- | --- |
@@ -135,7 +135,7 @@ Response `200` (trimmed: `extraData` cut from 272 characters)
 
 `GET /v1/transactions`
 
-Transactions, newest first. Without filters this lists every indexed transaction. Each entry has sender and recipient with their labels, value, fee, gas, outcome, `kind` (`Transfer`, `ContractInteraction` and so on), and `actionName` where the explorer recognises the call. With an `address` filter, `direction` gives which way the transaction went for that address, such as `Out`; it is `null` without one.
+Transactions, newest first. Without filters this lists every indexed transaction. Each entry has sender and recipient with their labels and tags (`fromTags`, `toTags`), value, fee, gas, outcome, `kind` (`Transfer`, `ContractInteraction` and so on), and `actionName` where the explorer recognises the call. With an `address` filter, `direction` gives which way the transaction went for that address, such as `Out`; it is `null` without one. Tags are those [Get an address](addresses.md#get-an-address) lists, in the same order and shape; an untagged address has an empty list. A contract creation's `toTags` is empty.
 
 | Parameter | Default | Description |
 | --- | --- | --- |

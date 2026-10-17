@@ -341,7 +341,7 @@ Response `200`
 
 `GET /v1/block-producers`
 
-The addresses that produced blocks over the most recent days, most blocks first, with each producer's block count, share, fees, issuance and total reward in wei.
+The addresses that produced blocks over the most recent days, most blocks first, with each producer's `label`, `tags`, block count, share, fees, issuance and total reward in wei. Tags are those [Get an address](addresses.md#get-an-address) lists, in the same order and shape; an untagged address has an empty list.
 
 | Parameter | Default | Description |
 | --- | --- | --- |
@@ -427,7 +427,7 @@ Response `200`
 
 `GET /v1/stake-distribution`
 
-How the staked native currency is spread across stakers: the largest stakers by amount and share, and the rest summed under `other`. Served where `features.stakeDistribution` is `true`, which is both deployments. On BNB Smart Chain the stakers are validators; on FSNEX they are ticket owners.
+How the staked native currency is spread across stakers: the largest stakers by amount and share, and the rest summed under `other`. Served where `features.stakeDistribution` is `true`, which is both deployments. On BNB Smart Chain the stakers are validators; on FSNEX they are ticket owners. Each slice carries its staker's `label` and `tags`. Tags are those [Get an address](addresses.md#get-an-address) lists, in the same order and shape; an untagged address has an empty list.
 
 ```bash
 curl "https://bnb.blockgaze.com/api/v1/stake-distribution"
