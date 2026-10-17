@@ -493,7 +493,7 @@ One transaction with everything the explorer shows for it:
 - the transaction's own fields: sender, recipient, value, gas, fee, nonce, type, input and the decoded method where the contract is verified
 - `feeBreakdown`, which separates the gas fee from any chain-specific fee
 - `tokenTransfers`: the token and NFT transfers the transaction made
-- `logs`: the event logs, decoded into `eventSignature` and `arguments` where the event is known
+- `logs`: the event logs, decoded into `eventSignature` and `arguments` where the event is known, each with its emitter's `addressLabel` and `addressTags`, the tags [Get an address](addresses.md#get-an-address) lists
 - `actions`: what the transaction did in plain terms, such as the swaps below, each with the tokens given and received
 - `operations`: Fusion native operations, on FSNEX
 - `internalTransactions`: the call frames the transaction made, when the deployment traces them. `isTraced` is `false` when the transaction's block lies outside `coveredFrom`–`coveredThrough`, and the field is `null` on deployments without tracing.

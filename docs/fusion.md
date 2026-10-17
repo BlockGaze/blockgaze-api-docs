@@ -163,7 +163,7 @@ Response `200`
 
 `GET /v1/fusion/assets/{id}/holders`
 
-One asset's holders, largest balance first, with shares of the supply.
+One asset's holders, largest balance first, with each holder's `holderLabel` and `holderTags` and shares of the supply. Tags are those [Get an address](addresses.md#get-an-address) lists, in the same order and shape; an untagged address has an empty list.
 
 | Parameter | Default | Description |
 | --- | --- | --- |

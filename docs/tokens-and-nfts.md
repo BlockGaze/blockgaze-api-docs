@@ -163,7 +163,7 @@ Response `200`
 
 `GET /v1/tokens/{address}/holders`
 
-A token's holders, largest balance first, with each balance's share of the supply in `shares`.
+A token's holders, largest balance first, with each holder's `holderLabel` and `holderTags` and each balance's share of the supply in `shares`. Tags are those [Get an address](addresses.md#get-an-address) lists, in the same order and shape; an untagged address has an empty list.
 
 | Parameter | Default | Description |
 | --- | --- | --- |
@@ -301,7 +301,7 @@ Response `200`
 
 `GET /v1/token-transfers`
 
-Token and NFT transfers, newest first, with the token's name, symbol and decimals on each. `value` is in the token's base units; `tokenId` is set for NFT transfers. Without filters this lists every indexed transfer.
+Token and NFT transfers, newest first, with the token's name, symbol and decimals on each. `value` is in the token's base units; `tokenId` is set for NFT transfers. Without filters this lists every indexed transfer. `fromLabel` / `fromTags` and `toLabel` / `toTags` name each side. Tags are those [Get an address](addresses.md#get-an-address) lists, in the same order and shape; an untagged address has an empty list.
 
 | Parameter | Default | Description |
 | --- | --- | --- |
@@ -480,7 +480,7 @@ Response `200`
 
 `GET /v1/tokens/{address}/nft-items`
 
-The items of an NFT collection by token id, with owner and item name where known.
+The items of an NFT collection by token id, with owner, its `ownerLabel` and `ownerTags`, and item name where known. Tags are those [Get an address](addresses.md#get-an-address) lists, in the same order and shape; an untagged address has an empty list.
 
 | Parameter | Default | Description |
 | --- | --- | --- |
@@ -523,7 +523,7 @@ Response `200`
 
 `GET /v1/tokens/{address}/nft-items/{tokenId}`
 
-One item: its owner, and the metadata the indexer fetched from the token URI. `metadataState` says whether the metadata has been fetched (`Fetched`) or not yet (`NotQueued` and other states), and `imageHref` is a browser-ready link for IPFS and Arweave images.
+One item: its owner with its `ownerLabel` and `ownerTags`, and the metadata the indexer fetched from the token URI. `metadataState` says whether the metadata has been fetched (`Fetched`) or not yet (`NotQueued` and other states), and `imageHref` is a browser-ready link for IPFS and Arweave images.
 
 | Parameter | Description |
 | --- | --- |
@@ -561,7 +561,7 @@ Response `200`
 
 `GET /v1/tokens/{address}/nft-items/{tokenId}/holders`
 
-The holders of an ERC-1155 item, largest quantity first. An ERC-721 item has a single owner, given by [Get an NFT item](#get-an-nft-item), so this list is empty for it, as in this example.
+The holders of an ERC-1155 item, largest quantity first, each with its `holderLabel` and `holderTags`. An ERC-721 item has a single owner, given by [Get an NFT item](#get-an-nft-item), so this list is empty for it, as in this example.
 
 | Parameter | Default | Description |
 | --- | --- | --- |
@@ -650,7 +650,7 @@ Response `200`
 
 `GET /v1/dex-trades`
 
-Swaps on decentralised exchanges, newest first. Each trade names the pool, the protocol and exchange, the trader, the base and quote tokens, the side (`Buy` or `Sell` of the base token), both amounts in base units, and the price of the base token in quote tokens.
+Swaps on decentralised exchanges, newest first. Each trade names the pool, the protocol and exchange, the trader with its `traderLabel` and `traderTags`, the base and quote tokens, the side (`Buy` or `Sell` of the base token), both amounts in base units, and the price of the base token in quote tokens.
 
 | Parameter | Default | Description |
 | --- | --- | --- |
@@ -739,7 +739,7 @@ Response `200`
 
 `GET /v1/nft-trades`
 
-NFT marketplace sales, newest first: marketplace, collection, token id, quantity, seller, buyer, and price in base units of the payment currency. `bundleSize` is the number of items sold together in one order, and `position` the item's place in it.
+NFT marketplace sales, newest first: marketplace, collection, token id, quantity, seller and buyer with their labels and tags (`sellerTags`, `buyerTags`), and price in base units of the payment currency. Tags are those [Get an address](addresses.md#get-an-address) lists, in the same order and shape; an untagged address has an empty list. `bundleSize` is the number of items sold together in one order, and `position` the item's place in it.
 
 | Parameter | Default | Description |
 | --- | --- | --- |

@@ -245,7 +245,7 @@ Response `200`
 
 `GET /v1/addresses/{address}/approvals/tokens`
 
-The token allowances the address has granted: token, spender and amount, with `isUnlimited` for the maximum uint256 allowance. `allowancesReadToBlock` is the block the allowances were read to, and is `null` on a deployment that does not track allowances, such as BNB Smart Chain.
+The token allowances the address has granted: token, spender with its `spenderLabel` and `spenderTags`, and amount, with `isUnlimited` for the maximum uint256 allowance. Tags are those [Get an address](#get-an-address) lists, in the same order and shape; an untagged address has an empty list. `allowancesReadToBlock` is the block the allowances were read to, and is `null` on a deployment that does not track allowances, such as BNB Smart Chain.
 
 | Parameter | Default | Description |
 | --- | --- | --- |
@@ -282,7 +282,7 @@ Response `200`
 
 `GET /v1/addresses/{address}/approvals/nfts`
 
-The NFT operators the address has approved.
+The NFT operators the address has approved, each with its `operatorLabel` and `operatorTags`. Tags are those [Get an address](#get-an-address) lists, in the same order and shape; an untagged address has an empty list.
 
 | Parameter | Default | Description |
 | --- | --- | --- |
@@ -307,7 +307,7 @@ Response `200`
 
 `GET /v1/addresses/{address}/events`
 
-The event logs a contract emitted, newest first, decoded into `eventSignature` and `arguments` where the event is known.
+The event logs a contract emitted, newest first, decoded into `eventSignature` and `arguments` where the event is known. Every log here is the contract's own, so `addressLabel` is `null` and `addressTags` empty; [Get a transaction](blocks-and-transactions.md#get-a-transaction) fills them.
 
 | Parameter | Default | Description |
 | --- | --- | --- |
