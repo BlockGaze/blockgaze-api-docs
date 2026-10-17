@@ -490,13 +490,15 @@ Response `200`
 
 One transaction with everything the explorer shows for it:
 
-- the transaction's own fields: sender, recipient, value, gas, fee, nonce, type, input and the decoded method where the contract is verified
+- the transaction's own fields: sender, recipient, value, gas, fee, nonce, type, input and the decoded method where the contract is verified, with the sender's and recipient's labels and tags in `fromLabel`, `fromTags`, `toLabel` and `toTags`, and those of the contract a contract creation made in `createdContractLabel` and `createdContractTags`
 - `feeBreakdown`, which separates the gas fee from any chain-specific fee
-- `tokenTransfers`: the token and NFT transfers the transaction made
+- `tokenTransfers`: the token and NFT transfers the transaction made, each with `fromLabel`, `fromTags`, `toLabel` and `toTags` for its sender and recipient
 - `logs`: the event logs, decoded into `eventSignature` and `arguments` where the event is known, each with its emitter's `addressLabel` and `addressTags`, the tags [Get an address](addresses.md#get-an-address) lists
-- `actions`: what the transaction did in plain terms, such as the swaps below, each with the tokens given and received
+- `actions`: what the transaction did in plain terms, such as the swaps below, each with the tokens given and received, and `accountLabel`, `accountTags`, `recipientLabel` and `recipientTags` for the account it names and its recipient
 - `operations`: Fusion native operations, on FSNEX
-- `internalTransactions`: the call frames the transaction made, when the deployment traces them. `isTraced` is `false` when the transaction's block lies outside `coveredFrom`–`coveredThrough`, and the field is `null` on deployments without tracing.
+- `internalTransactions`: the call frames the transaction made, when the deployment traces them, each frame with `fromLabel`, `fromTags`, `toLabel` and `toTags`. `isTraced` is `false` when the transaction's block lies outside `coveredFrom`–`coveredThrough`, and the field is `null` on deployments without tracing.
+
+Tags are those [Get an address](addresses.md#get-an-address) lists, in the same order and shape; an untagged address has an empty list, and an address with no label has a `null` label.
 
 | Parameter | Description |
 | --- | --- |

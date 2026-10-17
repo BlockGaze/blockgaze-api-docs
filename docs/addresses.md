@@ -89,7 +89,7 @@ Response `200`
 
 `GET /v1/addresses/{address}`
 
-An address's native balance, label, whether it is a contract, and, for contracts, who created it and in which transaction. `delegatesTo` is the delegated code of an EIP-7702 account. `holdsTimeSlices` and `holdsNfts` say whether the time-slice and NFT lists below have anything to show. `production` gives the number of blocks the address produced and the range they span, and is `null` for an address that produced none. `token` names the token a contract is, with its `name`, `symbol` and `standard` as [Get a token](tokens-and-nfts.md#get-a-token) gives them, and is `null` for an address with no token there. `tags` lists the curated tags the explorer gives the address, such as `Validator`, in the order the explorer ranks them, each with a `title`, a `colour` (`Neutral`, `Accent`, `Success`, `Warning` or `Danger`) and a `description` that is `null` where the tag has none; it is empty for an address with no tag.
+An address's native balance, label, whether it is a contract, and, for contracts, who created it and in which transaction, with the creator's label and tags in `creatorLabel` and `creatorTags`. `delegatesTo` is the delegated code of an EIP-7702 account, with its label and tags in `delegatesToLabel` and `delegatesToTags`. `holdsTimeSlices` and `holdsNfts` say whether the time-slice and NFT lists below have anything to show. `production` gives the number of blocks the address produced and the range they span, and is `null` for an address that produced none. `token` names the token a contract is, with its `name`, `symbol` and `standard` as [Get a token](tokens-and-nfts.md#get-a-token) gives them, and is `null` for an address with no token there. `tags` lists the curated tags the explorer gives the address, such as `Validator`, in the order the explorer ranks them, each with a `title`, a `colour` (`Neutral`, `Accent`, `Success`, `Warning` or `Danger`) and a `description` that is `null` where the tag has none; it is empty for an address with no tag.
 
 ```bash
 curl "https://bnb.blockgaze.com/api/v1/addresses/0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
@@ -370,7 +370,7 @@ Response `200`
 
 `GET /v1/addresses/{address}/internal-transactions`
 
-The call frames inside transactions that the address sent or received, newest first. `frame.movedValue` says whether the frame actually moved value: it is `false` when the frame or a frame above it failed, or the transaction failed. `direction` is the address's side of the frame.
+The call frames inside transactions that the address sent or received, newest first. `frame.movedValue` says whether the frame actually moved value: it is `false` when the frame or a frame above it failed, or the transaction failed. `direction` is the address's side of the frame. `frame.fromLabel`, `frame.fromTags`, `frame.toLabel` and `frame.toTags` give each side's label and tags, the tags [Get an address](#get-an-address) lists.
 
 Only blocks from `coveredFrom` to `coveredThrough` have been traced. On FSNEX the trace is still being extended through the chain's history; on BNB Smart Chain internal transactions are not traced, and both fields are `null`.
 
