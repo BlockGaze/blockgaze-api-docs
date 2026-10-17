@@ -43,12 +43,14 @@ Response `200`
     {
       "address": "0x8449cc37b8b678a138f0e1e73953302e68a45335",
       "label": null,
+      "tags": [],
       "balance": "4645982057110905995742236",
       "asOfBlock": 15130080
     },
     {
       "address": "0x359767ca87d111fcffd244bde6b47f95a9867a89",
       "label": null,
+      "tags": [],
       "balance": "3921644990597518984060240",
       "asOfBlock": 15130080
     }
@@ -102,7 +104,11 @@ Response `200`
   "address": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
   "isContract": true,
   "delegatesTo": null,
+  "delegatesToLabel": null,
+  "delegatesToTags": [],
   "creator": null,
+  "creatorLabel": null,
+  "creatorTags": [],
   "creationTransactionHash": null,
   "createdInBlock": null,
   "label": {
@@ -111,13 +117,19 @@ Response `200`
     "description": "Widely used token contracts, labelled so they read by name in transaction lists.",
     "url": null
   },
+  "tags": [],
   "balance": {
-    "balance": "1553425822991030814023074",
-    "asOfBlock": 128030415
+    "balance": "1559553685403182851805836",
+    "asOfBlock": 128206649
   },
   "holdsTimeSlices": false,
   "holdsNfts": false,
-  "production": null
+  "production": null,
+  "token": {
+    "name": "Wrapped BNB",
+    "symbol": "WBNB",
+    "standard": "Erc20"
+  }
 }
 ```
 
@@ -268,6 +280,7 @@ Response `200`
       "tokenDecimals": null,
       "spender": "0x3668c219b1fa8fe8175158f6ce91ded36fde9152",
       "spenderLabel": null,
+      "spenderTags": [],
       "amount": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
       "isUnlimited": true,
       "asOfBlock": 15130080
@@ -290,14 +303,33 @@ The NFT operators the address has approved, each with its `operatorLabel` and `o
 | `cursor` | | The `nextCursor` of the previous page. |
 
 ```bash
-curl "https://fsnex.net/api/v1/addresses/0xc2c007352c00fefa1a4752a28658705168abd873/approvals/nfts?pageSize=2"
+curl "https://bnb.blockgaze.com/api/v1/addresses/0x7b375d3b9003e7d3a9815d1a4a43ab83b3df51ed/approvals/nfts?pageSize=2"
 ```
 
 Response `200`
 
 ```json
 {
-  "approvals": [],
+  "approvals": [
+    {
+      "collection": "0x83ad1933a44c71550ca37dec384c05ca410e1b8d",
+      "collectionName": "TapeOut Miner",
+      "collectionSymbol": "TMINER",
+      "operator": "0x0000000000000068f116a894984e2db1123eb395",
+      "operatorLabel": null,
+      "operatorTags": [],
+      "sinceBlock": 128130802
+    },
+    {
+      "collection": "0xfe8128d79b88c21cd246c639c3ee608f40a7cd37",
+      "collectionName": "TapeOut Miner",
+      "collectionSymbol": "TMINER",
+      "operator": "0x0000000000000068f116a894984e2db1123eb395",
+      "operatorLabel": null,
+      "operatorTags": [],
+      "sinceBlock": 127919702
+    }
+  ],
   "nextCursor": null,
   "isIndexed": true
 }
@@ -334,6 +366,7 @@ Response `200`
         "logIndex": 14,
         "address": "0x049ddc3cd20ac7a2f6c867680f7e21de70aca9c3",
         "addressLabel": null,
+        "addressTags": [],
         "topics": [
           "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
           "0x0000000000000000000000000d9b0fca02c67e13e524c5fd4408b13a26454085",
@@ -390,18 +423,22 @@ Response `200`
 {
   "transactions": [
     {
-      "blockNumber": 7155774,
-      "transactionIndex": 0,
-      "transactionHash": "0xfab12f07010c19823c0a6f6a72eac70328fff1b49eff7b45ab9d76fa2a23088a",
-      "timestamp": 1655545569,
+      "blockNumber": 7900134,
+      "transactionIndex": 8,
+      "transactionHash": "0x95a2a0103c30f053862daf49e9eb286f677d836a2b8aa587bcc7073d87d80cb1",
+      "timestamp": 1665283448,
       "frame": {
         "notes": [],
-        "traceAddress": "0_4",
+        "fromLabel": "Anyswap: FSN/ANY Exchange",
+        "fromTags": [],
+        "toLabel": null,
+        "toTags": [],
+        "traceAddress": "0_1",
         "type": "call",
         "from": "0x049ddc3cd20ac7a2f6c867680f7e21de70aca9c3",
-        "to": "0x78917333bec47cee1022b31a136d31feff90d6fb",
-        "value": "82735686965967908390",
-        "gas": 158631,
+        "to": "0x44122c81878b8a4b2eb67285aeec7732c2d8a272",
+        "value": "963986621885776712687",
+        "gas": 2300,
         "error": null,
         "revertReason": null,
         "undone": false,
@@ -410,9 +447,9 @@ Response `200`
       "direction": "Out"
     }
   ],
-  "nextCursor": "7155774-0-0000000000000004",
+  "nextCursor": "7900134-8-0000000000000001",
   "coveredFrom": 0,
-  "coveredThrough": 7155960
+  "coveredThrough": 7901380
 }
 ```
 
@@ -449,6 +486,7 @@ Response `200`
       "exchangeName": "Chainge",
       "trader": "0xc2c007352c00fefa1a4752a28658705168abd873",
       "traderLabel": null,
+      "traderTags": [],
       "baseToken": {
         "address": "0x9b9c34f603723ed9aec108a51edfc1b60cd2d7cc",
         "isNative": false,
@@ -480,6 +518,7 @@ Response `200`
       "exchangeName": "Chainge",
       "trader": "0xc2c007352c00fefa1a4752a28658705168abd873",
       "traderLabel": null,
+      "traderTags": [],
       "baseToken": {
         "address": "0x9b9c34f603723ed9aec108a51edfc1b60cd2d7cc",
         "isNative": false,
@@ -551,8 +590,10 @@ Response `200`
       "quantity": "1",
       "seller": "0x04e7882988c9be3bb3fa1a7aa96af7e62464e752",
       "sellerLabel": null,
+      "sellerTags": [],
       "buyer": "0x5813c157b33a09685e30a5f2e6e1fc54089d08e9",
       "buyerLabel": null,
+      "buyerTags": [],
       "price": "8590000000000000",
       "currency": {
         "address": "0x0000000000000000000000000000000000000000",

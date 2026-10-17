@@ -2,7 +2,7 @@
 
 BlockGaze indexes EVM chains into a database and serves the indexed records through the explorer and through a read-only HTTP API. The API returns the same blocks, transactions, addresses, tokens, trades and statistics that the explorer pages show, as JSON.
 
-This repository documents the API as it runs on the two public BlockGaze deployments. Every example response in these pages was captured from a live deployment on 16 October 2026.
+This repository documents the API as it runs on the two public BlockGaze deployments. Every example response in these pages was captured from a live deployment on 16 October 2026, except those that show address tags, which were captured on 17 October 2026.
 
 ## Deployments and base URLs
 
@@ -73,7 +73,7 @@ Use the document to generate a client in your language. The document states ever
 - **Timestamps** are mostly Unix seconds, as a number (`"timestamp": 1759826630`) or a decimal string for Fusion time-lock and ticket bounds. A few fields are ISO 8601 strings in UTC, such as `createdAt` on Fusion assets and the indexer's own `evaluatedAt`, `observedAt` and `metadataFetchedAt`. The examples show which form each field uses.
 - **Durations** are .NET time spans: `hh:mm:ss.fffffff`, with a leading `d.` for whole days (`"374.10:38:58.3176093"`).
 - **Addresses and hashes** are lowercase `0x` hex in responses.
-- **Labels** (`fromLabel`, `minerLabel`, `label`) are the explorer's names for known addresses, and are `null` for addresses without one.
+- **Labels** (`fromLabel`, `minerLabel`, `label`) are the explorer's names for known addresses, and are `null` for addresses without one. **Tags** (`fromTags`, `minerTags`, `tags`) list the curated tags that say what kind of address it is, such as `Validator`, and are empty for an address without one.
 - **Days** in daily statistics are UTC calendar days. The current day is included with `"isPartial": true`.
 
 ## Pagination

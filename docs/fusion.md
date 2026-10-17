@@ -99,6 +99,8 @@ Response `200`
 
 ```json
 {
+  "creatorLabel": null,
+  "creatorTags": [],
   "idIsValid": true,
   "definition": {
     "assetId": "0x2e6018f85f10bbd1210b79b4835d5739555c3f43834a772b8c960a3c5c2c2536",
@@ -139,6 +141,10 @@ Response `200`
 {
   "transfers": [
     {
+      "fromLabel": null,
+      "fromTags": [],
+      "toLabel": null,
+      "toTags": [],
       "blockNumber": 14140815,
       "transactionIndex": 1,
       "logIndex": 1,
@@ -182,6 +188,7 @@ Response `200`
     {
       "holder": "0x5efe6633d8a44412238d22b943760fa36d2428bd",
       "holderLabel": null,
+      "holderTags": [],
       "balance": "355473970000000000000000000",
       "asOfBlock": 15130080
     }
@@ -221,6 +228,10 @@ Response `200`
   "transfers": [
     {
       "transfer": {
+        "fromLabel": null,
+        "fromTags": [],
+        "toLabel": null,
+        "toTags": [],
         "blockNumber": 15129933,
         "transactionIndex": 0,
         "logIndex": 1,
@@ -240,6 +251,10 @@ Response `200`
     },
     {
       "transfer": {
+        "fromLabel": null,
+        "fromTags": [],
+        "toLabel": null,
+        "toTags": [],
         "blockNumber": 15129039,
         "transactionIndex": 0,
         "logIndex": 1,
@@ -328,6 +343,10 @@ Response `200`
 {
   "trades": [
     {
+      "takerLabel": null,
+      "takerTags": [],
+      "makerLabel": null,
+      "makerTags": [],
       "blockNumber": 13630056,
       "transactionIndex": 1,
       "transactionHash": "0xa6705b3154472bce55caac7d3033657b9d7248668312761755f7da061adbbaeb",
@@ -362,6 +381,10 @@ Response `200`
       ]
     },
     {
+      "takerLabel": null,
+      "takerTags": [],
+      "makerLabel": null,
+      "makerTags": [],
       "blockNumber": 13630022,
       "transactionIndex": 1,
       "transactionHash": "0xeb4f757a82eab837f41dcd3b658fd0bef4792fca71050a583f5cbc2f4afe5269",
@@ -423,6 +446,8 @@ Response `200`
 {
   "offers": [
     {
+      "makerLabel": null,
+      "makerTags": [],
       "swapId": "0x2c9369ad203894d5e8bfa193f1ad200b76043d0193ce8b9810915fb9544e4513",
       "status": "Open",
       "maker": "0x748e6ac25025758612507cefeed7987db2dbdd8b",
@@ -461,6 +486,8 @@ Response `200`
       "recall": null
     },
     {
+      "makerLabel": null,
+      "makerTags": [],
       "swapId": "0x47b27043dcb917368c55413969bd306ac95cd007ffc545d53bcd695883307001",
       "status": "Open",
       "maker": "0x77bb1952d492fa4f90be277159a4bcd77f784918",
@@ -521,6 +548,8 @@ Response `200`
 {
   "idIsValid": true,
   "details": {
+    "makerLabel": null,
+    "makerTags": [],
     "swapId": "0xc3bea168ff2933a9b89bd82a5ce2f3b5efcc5458184b30483a56de261cf31b02",
     "status": "Filled",
     "maker": "0x8148e2dbec9881d735fe184393bfa89e9d4c11bf",
@@ -557,6 +586,8 @@ Response `200`
     ],
     "takes": [
       {
+        "accountLabel": null,
+        "accountTags": [],
         "blockNumber": 13630056,
         "transactionHash": "0xa6705b3154472bce55caac7d3033657b9d7248668312761755f7da061adbbaeb",
         "timestamp": 1740254022,
@@ -590,6 +621,10 @@ Response `200`
 {
   "trades": [
     {
+      "takerLabel": null,
+      "takerTags": [],
+      "makerLabel": null,
+      "makerTags": [],
       "blockNumber": 13630056,
       "transactionIndex": 1,
       "transactionHash": "0xa6705b3154472bce55caac7d3033657b9d7248668312761755f7da061adbbaeb",
@@ -624,6 +659,16 @@ Response `200`
       ]
     },
     {
+      "takerLabel": null,
+      "takerTags": [],
+      "makerLabel": "FSNPOOL",
+      "makerTags": [
+        {
+          "title": "Staking pool",
+          "colour": "Accent",
+          "description": "A staking pool: it bought tickets with FSN and time-locks taken from many other accounts and produced blocks with them."
+        }
+      ],
       "blockNumber": 422674,
       "transactionIndex": 1,
       "transactionHash": "0x095cf8672285ccaef5cde4896614f2106e20632dc51dba9b902c36bc0694fde0",
@@ -757,6 +802,8 @@ Response `200`
 {
   "idIsValid": true,
   "details": {
+    "ownerLabel": null,
+    "ownerTags": [],
     "id": "0x211cdb5c97630d057d3aab2f016ec094601699ddc7be38ba187858fc523cd5de",
     "owner": "0x0aef49b7935a789003ba9c20c1e23a34d9435734",
     "purchaseBlock": 15127371,
@@ -788,10 +835,16 @@ Response `200`
 {
   "numberIsValid": true,
   "details": {
+    "holderLabel": null,
+    "holderTags": [],
     "number": "985978",
     "holder": "0x0aef49b7935a789003ba9c20c1e23a34d9435734",
     "events": [
       {
+        "fromLabel": null,
+        "fromTags": [],
+        "toLabel": null,
+        "toTags": [],
         "kind": "Created",
         "blockNumber": 812,
         "transactionHash": "0x540a4b48437dc3e562605ceedbcc63ed098472de21d2cabc3fa28bd289f12bdd",

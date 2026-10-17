@@ -357,29 +357,43 @@ Response `200` (trimmed: `producers` shows 2 of 45)
 {
   "days": 1,
   "endsToday": true,
-  "fromBlock": 127878730,
-  "toBlock": 128033634,
-  "blockCount": 154905,
+  "fromBlock": 128070605,
+  "toBlock": 128209081,
+  "blockCount": 138477,
   "producers": [
     {
-      "producer": "0x460a252b4feefa821d3351731220627d7b7d1f3d",
-      "label": "Validator: Defibit",
-      "blockCount": 6872,
-      "sharePercent": 4.436267389690456,
-      "totalFees": "23580410560328143735",
+      "producer": "0xb4647b856cb9c3856d559c885bed8b43e0846a47",
+      "label": "CertiK",
+      "tags": [
+        {
+          "title": "Validator",
+          "colour": "Accent",
+          "description": "A validator's consensus address: it produces blocks and sends each block's system transactions."
+        }
+      ],
+      "blockCount": 6112,
+      "sharePercent": 4.413729355777494,
+      "totalFees": "18250999103627067904",
       "issuance": "0",
-      "blockReward": "23580410560328143735",
-      "lastBlock": 128032983
+      "blockReward": "18250999103627067904",
+      "lastBlock": 128208983
     },
     {
-      "producer": "0xca503a7ed99eca485da2e875aedf7758472c378c",
-      "label": "Validator: InfStones",
-      "blockCount": 6840,
-      "sharePercent": 4.415609567154062,
-      "totalFees": "15767607995221279764",
+      "producer": "0xf8b99643fafc79d9404de68e48c4d49a3936f787",
+      "label": "Avengers",
+      "tags": [
+        {
+          "title": "Validator",
+          "colour": "Accent",
+          "description": "A validator's consensus address: it produces blocks and sends each block's system transactions."
+        }
+      ],
+      "blockCount": 6072,
+      "sharePercent": 4.384843692454343,
+      "totalFees": "15856885027197169108",
       "issuance": "0",
-      "blockReward": "15767607995221279764",
-      "lastBlock": 128033623
+      "blockReward": "15856885027197169108",
+      "lastBlock": 128209023
     }
   ]
 }
@@ -438,28 +452,42 @@ Response `200` (trimmed: `slices` shows 2 of 6)
 ```json
 {
   "available": true,
-  "asOfBlock": 128033507,
+  "asOfBlock": 128207534,
   "evaluatedAt": null,
   "holderCount": 56,
-  "total": "24148425195650580952256259",
+  "total": "24148770834373050147243207",
   "slices": [
     {
       "address": "0xd3b0d838ccceae7ebf1781d11d1bb741db7fe1a7",
-      "label": "Validator: BNBEve",
-      "amount": "1245594195804026641888353",
+      "label": "BNBEve",
+      "tags": [
+        {
+          "title": "Validator",
+          "colour": "Accent",
+          "description": "A validator's consensus address: it produces blocks and sends each block's system transactions."
+        }
+      ],
+      "amount": "1245617119928016174571939",
       "share": 0.05158
     },
     {
-      "address": "0x5cf810ab8c718ac065b45f892a5badab2b2946b9",
-      "label": "Validator: Zen",
-      "amount": "1184270043277030209993368",
-      "share": 0.049041
+      "address": "0xbdcc079bbb23c1d9a6f36aa31309676c258abac7",
+      "label": "Fuji",
+      "tags": [
+        {
+          "title": "Validator",
+          "colour": "Accent",
+          "description": "A validator's consensus address: it produces blocks and sends each block's system transactions."
+        }
+      ],
+      "amount": "1148893384610266310271527",
+      "share": 0.047575
     }
   ],
   "other": {
     "holderCount": 50,
-    "amount": "17221937437308400561191541",
-    "share": 0.71317
+    "amount": "17275358861338521428653398",
+    "share": 0.715372
   }
 }
 ```
