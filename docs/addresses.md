@@ -89,7 +89,7 @@ Response `200`
 
 `GET /v1/addresses/{address}`
 
-An address's native balance, label, whether it is a contract, and, for contracts, who created it and in which transaction. `delegatesTo` is the delegated code of an EIP-7702 account. `holdsTimeSlices` and `holdsNfts` say whether the time-slice and NFT lists below have anything to show. `production` gives the number of blocks the address produced and the range they span, and is `null` for an address that produced none.
+An address's native balance, label, whether it is a contract, and, for contracts, who created it and in which transaction. `delegatesTo` is the delegated code of an EIP-7702 account. `holdsTimeSlices` and `holdsNfts` say whether the time-slice and NFT lists below have anything to show. `production` gives the number of blocks the address produced and the range they span, and is `null` for an address that produced none. `token` names the token a contract is, with its `name`, `symbol` and `standard` as [Get a token](tokens-and-nfts.md#get-a-token) gives them, and is `null` for an address with no token there.
 
 ```bash
 curl "https://bnb.blockgaze.com/api/v1/addresses/0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
