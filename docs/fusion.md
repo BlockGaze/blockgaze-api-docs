@@ -89,7 +89,7 @@ Response `200` (trimmed: `assets.definition.description` cut from 305 characters
 
 `GET /v1/fusion/assets/{id}`
 
-One asset's definition and current supply. `idIsValid` is `false` for an id that is not 32 bytes of hex.
+One asset's definition and current supply, with its creator's label and tags in `creatorLabel` and `creatorTags`. `idIsValid` is `false` for an id that is not 32 bytes of hex. Tags are those [Get an address](addresses.md#get-an-address) lists, in the same order and shape; an untagged address has an empty list, and an address with no label has a `null` label.
 
 ```bash
 curl "https://fsnex.net/api/v1/fusion/assets/0x2e6018f85f10bbd1210b79b4835d5739555c3f43834a772b8c960a3c5c2c2536"
@@ -122,7 +122,7 @@ Response `200`
 
 `GET /v1/fusion/assets/{id}/transfers`
 
-Movements of one asset, newest first: creation, transfers, time locks and supply changes, by `kind`.
+Movements of one asset, newest first: creation, transfers, time locks and supply changes, by `kind`, each with its sender's and recipient's labels and tags in `fromLabel`, `fromTags`, `toLabel` and `toTags`. Tags are those [Get an address](addresses.md#get-an-address) lists, in the same order and shape; an untagged address has an empty list, and an address with no label has a `null` label.
 
 | Parameter | Default | Description |
 | --- | --- | --- |
@@ -203,7 +203,7 @@ Response `200`
 
 `GET /v1/fusion/addresses/{address}/asset-transfers`
 
-Asset movements to or from one address, newest first, across every asset, with `direction` relative to the address.
+Asset movements to or from one address, newest first, across every asset, with `direction` relative to the address and each party's label and tags as in [Asset transfers](#asset-transfers).
 
 | Parameter | Default | Description |
 | --- | --- | --- |
@@ -311,7 +311,7 @@ Response `200` (trimmed: `assets` shows 2 of 3)
 
 `GET /v1/fusion/swaps/trades`
 
-Takes of Fusion native swaps, newest first: who made and took the swap, how many parts were taken, and what each side gave.
+Takes of Fusion native swaps, newest first: who made and took the swap, with their labels and tags in `makerLabel`, `makerTags`, `takerLabel` and `takerTags`, how many parts were taken, and what each side gave. Tags are those [Get an address](addresses.md#get-an-address) lists, in the same order and shape; an untagged address has an empty list, and an address with no label has a `null` label.
 
 | Parameter | Default | Description |
 | --- | --- | --- |
@@ -406,7 +406,7 @@ Response `200`
 
 `GET /v1/fusion/swaps/offers`
 
-Swap offers, most recently made first, each with its status (such as `Open` or `Filled`), what it offers and requests per part, how many parts remain, and its takes.
+Swap offers, most recently made first, each with its status (such as `Open` or `Filled`), its maker's label and tags in `makerLabel` and `makerTags`, what it offers and requests per part, how many parts remain, and its takes, each with its sender's in `accountLabel` and `accountTags`. Tags are those [Get an address](addresses.md#get-an-address) lists, in the same order and shape; an untagged address has an empty list, and an address with no label has a `null` label.
 
 | Parameter | Default | Description |
 | --- | --- | --- |
@@ -509,7 +509,7 @@ Response `200`
 
 `GET /v1/fusion/swaps/{id}`
 
-One swap: its status, maker, what it offered and requested per part, every take, and its recall if the maker withdrew it.
+One swap: its status, maker, what it offered and requested per part, every take, and its recall if the maker withdrew it, with the maker's and each take's and recall's sender's labels and tags as in [Swap offers](#swap-offers). The addresses in `targets` carry none.
 
 ```bash
 curl "https://fsnex.net/api/v1/fusion/swaps/0xc3bea168ff2933a9b89bd82a5ce2f3b5efcc5458184b30483a56de261cf31b02"
@@ -573,7 +573,7 @@ Response `200`
 
 `GET /v1/fusion/addresses/{address}/swaps`
 
-Swap takes in which the address was maker or taker, newest first.
+Swap takes in which the address was maker or taker, newest first, with labels and tags as in [Swap trades](#swap-trades).
 
 | Parameter | Default | Description |
 | --- | --- | --- |
@@ -745,7 +745,7 @@ Response `200` (trimmed: `tickets` shows 2 of 362)
 
 `GET /v1/fusion/tickets/{id}`
 
-One staking ticket: owner, value, purchase block, start, expiry and status. Returns `400` for an id that is not 32 bytes of hex.
+One staking ticket: owner, with its label and tags in `ownerLabel` and `ownerTags`, value, purchase block, start, expiry and status. Returns `400` for an id that is not 32 bytes of hex.
 
 ```bash
 curl "https://fsnex.net/api/v1/fusion/tickets/0x211cdb5c97630d057d3aab2f016ec094601699ddc7be38ba187858fc523cd5de"
@@ -776,7 +776,7 @@ Response `200`
 
 `GET /v1/fusion/usans/{number}`
 
-A USAN (Fusion's short account number): the address that holds it and its history. Returns `400` for anything other than a positive whole number.
+A USAN (Fusion's short account number): the address that holds it, with its label and tags in `holderLabel` and `holderTags`, and its history, each event with its parties' in `fromLabel`, `fromTags`, `toLabel` and `toTags`. Returns `400` for anything other than a positive whole number.
 
 ```bash
 curl "https://fsnex.net/api/v1/fusion/usans/985978"

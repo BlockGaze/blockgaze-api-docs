@@ -495,7 +495,7 @@ One transaction with everything the explorer shows for it:
 - `tokenTransfers`: the token and NFT transfers the transaction made, each with `fromLabel`, `fromTags`, `toLabel` and `toTags` for its sender and recipient
 - `logs`: the event logs, decoded into `eventSignature` and `arguments` where the event is known, each with its emitter's `addressLabel` and `addressTags`, the tags [Get an address](addresses.md#get-an-address) lists
 - `actions`: what the transaction did in plain terms, such as the swaps below, each with the tokens given and received, and `accountLabel`, `accountTags`, `recipientLabel` and `recipientTags` for the account it names and its recipient
-- `operations`: Fusion native operations, on FSNEX
+- `operations`: Fusion native operations, on FSNEX, each field with its label, value and `format`; a field whose `format` is `address` carries that address's label and tags in `addressLabel` and `addressTags`, and every other field a `null` label and no tags
 - `internalTransactions`: the call frames the transaction made, when the deployment traces them, each frame with `fromLabel`, `fromTags`, `toLabel` and `toTags`. `isTraced` is `false` when the transaction's block lies outside `coveredFrom`–`coveredThrough`, and the field is `null` on deployments without tracing.
 
 Tags are those [Get an address](addresses.md#get-an-address) lists, in the same order and shape; an untagged address has an empty list, and an address with no label has a `null` label.
