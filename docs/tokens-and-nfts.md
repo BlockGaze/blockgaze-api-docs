@@ -212,7 +212,7 @@ Response `200`
 
 `GET /v1/tokens/{address}/dex-trades`
 
-DEX trades in pools that hold the token, newest first. Same shape as [`GET /v1/dex-trades`](#list-dex-trades).
+DEX trades in pools whose two tokens include the token, newest first; for an FRC759 slice, also trades of pools that name its parent in which the slice itself changed hands. Same shape as [`GET /v1/dex-trades`](#list-dex-trades).
 
 | Parameter | Default | Description |
 | --- | --- | --- |
@@ -667,7 +667,7 @@ Response `200`
 
 `GET /v1/dex-trades`
 
-Swaps on decentralised exchanges, newest first. Each trade names the pool, the protocol and exchange, the trader with its `traderLabel` and `traderTags`, the base and quote tokens, the side (`Buy` or `Sell` of the base token), both amounts in base units, and the price of the base token in quote tokens.
+Swaps on decentralised exchanges, newest first. Each trade names the pool, the protocol and exchange, the trader with its `traderLabel` and `traderTags`, the base and quote tokens, the side (`Buy` or `Sell` of the base token), both amounts in base units, and the price of the base token in quote tokens. When the pool's tokens are not known, `baseToken` and `quoteToken` are both `null`, `side` is `Unknown` and `price` is `null`. This is the case for a Uniswap V4 pool whose `Initialize` log, which alone names its tokens, precedes the first block the deployment ever indexed (a definition read once is kept after its log is pruned, so a pool created inside the window stays known after `indexedFromBlock` moves past it), and for any other pool until a reading of its contract has given exactly two tokens. `side` is also `Unknown` when the two amounts do not move opposite ways, as in a flash swap.
 
 | Parameter | Default | Description |
 | --- | --- | --- |
