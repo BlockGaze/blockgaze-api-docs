@@ -888,7 +888,7 @@ The call frames inside the chain's transactions that carry native coin or create
 
 Only blocks from `coveredFrom` to `coveredThrough` have been traced, the same range [`/v1/network`](network.md#network-status) gives as `tracedFromBlock` and `tracedToBlock`; where nothing is traced, as on BNB Smart Chain, both are `null`, and the list is empty whenever `coveredFrom` is `null`.
 
-Each page reads a bounded number of the chain's frames, so a page can hold fewer items than asked for, or none, and still give a `nextCursor`: frames the chosen kind leaves out were passed over, and the next page goes on from there. A `nextCursor` of `null` means the oldest traced frame was reached.
+A page holds as many items as asked for unless the oldest traced frame is reached, when `nextCursor` is `null`. While a deployment is still building the index this list reads through, once after the upgrade that added it, each page reads a bounded number of the chain's frames instead, so a page can hold fewer items than asked for, or none, and still give a `nextCursor`: frames the chosen kind leaves out were passed over, and the next page goes on from there.
 
 | Parameter | Default | Description |
 | --- | --- | --- |
