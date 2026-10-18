@@ -20,7 +20,7 @@
 
 `GET /v1/network`
 
-The chain the deployment indexes, the feature sets it serves, and the range of blocks it holds. Read this first: `indexedFromBlock` and `indexedToBlock` give the retained range, `historyState` says whether the chain is live (`Live`) or halted and complete (`HaltedComplete`), and `refresh` gives how often the explorer polls each kind of data on a live chain. `tracedFromBlock` and `tracedToBlock` give the blocks whose internal transactions have been traced, the range the [internal transaction list](blocks-and-transactions.md#list-internal-transactions) covers, and are both `null` where none is.
+The chain the deployment indexes, the feature sets it serves, and the range of blocks it holds. Read this first: `indexedFromBlock` and `indexedToBlock` give the retained range, `historyState` says whether the chain is live (`Live`) or halted and complete (`HaltedComplete`), and `refresh` gives how often the explorer polls each kind of data on a live chain. `tracedFromBlock` and `tracedToBlock` give the blocks whose internal transactions have been traced, the range the [internal transaction list](blocks-and-transactions.md#list-internal-transactions) covers, and are both `null` where no block has been traced.
 
 `transactionOperationKinds` lists the values the [transaction list](blocks-and-transactions.md#list-transactions) accepts for `operation`, and `exportContentKinds` lists the chain-specific values the [CSV export](addresses.md#csv-export) accepts for `content`.
 
@@ -157,7 +157,7 @@ Response `200`
 
 How far the indexer has got. `lastBlock` is the newest indexed block and `latestBlockAge` how long ago it was produced. Each entry in `projectors` is a derived data set (balances, token metadata, DEX pools, internal transactions and so on) with the block it has reached and how far it is behind. Data from a projector that is behind can be missing for the newest blocks.
 
-`status` is `Fresh` when the newest block is recent and the required projectors are caught up, and `Delayed` otherwise. FSNEX always reports `Delayed`, because its chain has stopped.
+`status` is `Fresh` when the newest block is recent and the required projectors are caught up, and `Delayed` otherwise. FSNEX always reports `Delayed`, because its chain data ends at a fixed block.
 
 ```bash
 curl "https://bnb.blockgaze.com/api/v1/sync-status"

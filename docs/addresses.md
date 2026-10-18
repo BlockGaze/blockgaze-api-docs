@@ -409,7 +409,7 @@ Only blocks from `coveredFrom` to `coveredThrough` have been traced. On FSNEX th
 
 | Parameter | Default | Description |
 | --- | --- | --- |
-| `kind` | `all` | `all` for every frame, or `transfers` for frames that carry value. |
+| `kind` | `all` | `all` for every frame that carries a value or creates or destroys a contract, or `transfers` for frames that carry value. |
 | `pageSize` | `25` | Frames per page, at most 50. |
 | `cursor` | | The `nextCursor` of the previous page. |
 

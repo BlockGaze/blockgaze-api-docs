@@ -140,17 +140,17 @@ Response `200` (trimmed: `extraData` cut from 272 characters)
 
 `GET /v1/blocks/{number}/countdown`
 
-How far off a block number is, an estimate. The chain's head is estimated from the newest indexed block's age and the mean time per block between it and the oldest of the newest 1,000 indexed blocks, and only while the newest block is fresh by the deployment's sync health (no more than two minutes old by default), so `state` is one of:
+How far off a block number is, an estimate. The chain's head is estimated from the newest indexed block's age and the mean time per block between it and the oldest of the newest 1,000 indexed blocks, and only while the newest block is fresh by the deployment's sync health (no more than two minutes old by default). `state` says which case applies:
 
 | `state` | Meaning |
 | --- | --- |
 | `Countdown` | The block is expected: `remainingBlocks` are left, `estimatedTimestamp` (Unix seconds, rounded up) says when, and `remainingTime` how long that is from the answer; the two are `null` for a number too far ahead to date. |
-| `Reached` | By the estimate the chain has already passed the number, whether or not the block is indexed yet. |
+| `Reached` | By the estimate the chain has reached or passed the number, whether or not the block is indexed yet. |
 | `Stale` | The newest indexed block is too old to estimate from. |
 | `Halted` | The number is past the block where the chain's data ends, so it is not expected (FSNEX). Numbers up to that block are `Reached`. |
 | `Unavailable` | Too few blocks are indexed to measure a block time. |
 
-`averageBlockTime` is the time per block used, as a time span, or `null` where none could be measured or none is needed. A number that is not a whole, non-negative block number answers `400`. Count down from `remainingTime` rather than from `estimatedTimestamp` if your clock may be off.
+`averageBlockTime` is the time per block used, as a [duration](../README.md#conventions), or `null` where none could be measured or none is needed. A number that is not a whole, non-negative block number answers `400`. Count down from `remainingTime` rather than from `estimatedTimestamp` if your clock may be off. `remainingTime` is measured when the answer is made, and answers are cached for about 2 seconds, so a cached answer's `remainingTime` can be up to 2 seconds too long.
 
 ```bash
 curl "https://bnb.blockgaze.com/api/v1/blocks/130000000/countdown"
@@ -559,7 +559,7 @@ Response `200`
 One transaction with everything the explorer shows for it:
 
 - the transaction's own fields: sender, recipient, value, gas, fee, nonce, type, input and the decoded method where the contract is verified, with the sender's and recipient's labels and tags in `fromLabel`, `fromTags`, `toLabel` and `toTags`, and those of the contract a contract creation made in `createdContractLabel` and `createdContractTags`
-- `inputText`: the input read as UTF-8 text, for a message sent in it, or `null`. It is sent only when nothing decodes the input as a call (`method` is `null` and so is `inputEncoding`), the transaction creates no contract and its bytes are valid UTF-8 holding a character that is neither white space nor invisible and no control character but a tab, a carriage return or a line feed, so a call with arguments is never read as text, though an unknown selector sent alone occasionally is. Every line break is sent as a line feed, tabs are kept, and any other invisible character, such as a zero-width space or a right-to-left override, is written as a `\uXXXX` escape
+- `inputText`: the input read as UTF-8 text, for a message sent in it, or `null`. It is sent only when nothing decodes the input as a call (`method` is `null` and so is `inputEncoding`), the transaction creates no contract and its bytes are valid UTF-8, contain at least one visible character, and contain no control character other than a tab, a carriage return or a line feed, so a call with arguments, whose ABI encoding almost always holds zero bytes, is practically never read as text, though an unknown selector sent alone occasionally is. Every line break is sent as a line feed, tabs are kept, and any other invisible character, such as a zero-width space or a right-to-left override, is written as a `\uXXXX` escape
 - `feeBreakdown`, which separates the gas fee from any chain-specific fee
 - `tokenTransfers`: the token and NFT transfers the transaction made, each with `fromLabel`, `fromTags`, `toLabel` and `toTags` for its sender and recipient
 - `logs`: the event logs, decoded into `eventSignature` and `arguments` where the event is known, each with its emitter's `addressLabel` and `addressTags`, the tags [Get an address](addresses.md#get-an-address) lists
@@ -884,15 +884,15 @@ Response `200`
 
 `GET /v1/internal-transactions`
 
-The call frames inside the chain's transactions that moved native coin or created or destroyed a contract, newest first. Each item has the shape of an [address's internal transactions](addresses.md#internal-transactions) without `direction`, since the list names no address: `frame.movedValue` says whether the frame actually moved value, and the `frame` labels and tags name each side.
+The call frames inside the chain's transactions that carry native coin or create or destroy a contract, newest first. Each item has the shape of an [address's internal transactions](addresses.md#internal-transactions) without `direction`, since the list names no address: `frame.movedValue` says whether the frame actually moved value, and the `frame` labels and tags name each side.
 
-Only blocks from `coveredFrom` to `coveredThrough` have been traced, the same range [`/v1/network`](network.md#network-status) gives as `tracedFromBlock` and `tracedToBlock`; where nothing is traced, as on BNB Smart Chain, both are `null` and the list is empty.
+Only blocks from `coveredFrom` to `coveredThrough` have been traced, the same range [`/v1/network`](network.md#network-status) gives as `tracedFromBlock` and `tracedToBlock`; where nothing is traced, as on BNB Smart Chain, both are `null`, and the list is empty whenever `coveredFrom` is `null`.
 
-Each page reads a bounded number of the chain's frames, so a page can hold fewer items than asked for, or none, and still give a `nextCursor`: frames that moved nothing were passed over, and the next page goes on from there. A `nextCursor` of `null` means the oldest traced frame was reached.
+Each page reads a bounded number of the chain's frames, so a page can hold fewer items than asked for, or none, and still give a `nextCursor`: frames the chosen kind leaves out were passed over, and the next page goes on from there. A `nextCursor` of `null` means the oldest traced frame was reached.
 
 | Parameter | Default | Description |
 | --- | --- | --- |
-| `kind` | `all` | `all` for every frame that moved coin or created or destroyed a contract, or `transfers` for frames that carry value. |
+| `kind` | `all` | `all` for every frame that carries a value or creates or destroys a contract, or `transfers` for frames that carry value. |
 | `pageSize` | `25` | Frames per page, at most 50. |
 | `cursor` | | The `nextCursor` of the previous page. |
 
