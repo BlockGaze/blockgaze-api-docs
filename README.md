@@ -32,6 +32,8 @@ Some endpoints exist only on the chain they describe. `GET /v1/network` lists wh
 
 ## Quick start
 
+Follow the [API quick-start walkthrough](docs/quick-start.md) for sample responses from both explorers, a runnable Python pagination example, a PowerShell request and network-selection checks. The walkthrough states its own response verification date.
+
 No API key or account is needed. Send a `GET` request and read the JSON:
 
 ```bash
