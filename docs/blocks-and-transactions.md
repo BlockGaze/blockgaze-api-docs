@@ -546,6 +546,7 @@ Response `200`
 One transaction with everything the explorer shows for it:
 
 - the transaction's own fields: sender, recipient, value, gas, fee, nonce, type, input and the decoded method where the contract is verified, with the sender's and recipient's labels and tags in `fromLabel`, `fromTags`, `toLabel` and `toTags`, and those of the contract a contract creation made in `createdContractLabel` and `createdContractTags`
+- `inputText`: the input read as UTF-8 text, for a message sent in it, or `null`. It is sent only when nothing decodes the input as a call (`method` is `null` and so is `inputEncoding`), the transaction creates no contract and its bytes are valid UTF-8 holding a character that is neither white space nor invisible and no control character but a tab, a carriage return or a line feed, so a call with arguments is never read as text, though an unknown selector sent alone occasionally is. Every line break is sent as a line feed, tabs are kept, and any other invisible character, such as a zero-width space or a right-to-left override, is written as a `\uXXXX` escape
 - `feeBreakdown`, which separates the gas fee from any chain-specific fee
 - `tokenTransfers`: the token and NFT transfers the transaction made, each with `fromLabel`, `fromTags`, `toLabel` and `toTags` for its sender and recipient
 - `logs`: the event logs, decoded into `eventSignature` and `arguments` where the event is known, each with its emitter's `addressLabel` and `addressTags`, the tags [Get an address](addresses.md#get-an-address) lists
