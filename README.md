@@ -60,7 +60,7 @@ Use the document to generate a client in your language. The document states ever
 | Area | Endpoints |
 | --- | --- |
 | [Network and statistics](docs/network.md) | Network status, activity, sync status, gas, daily statistics, block producers, stake distribution, labels, search, market data, staking |
-| [Blocks and transactions](docs/blocks-and-transactions.md) | Block list and detail, transaction list (by block, address or operation) and detail, internal transaction list |
+| [Blocks and transactions](docs/blocks-and-transactions.md) | Block list, detail and countdown, transaction list (by block, address or operation) and detail, internal transaction list |
 | [Addresses](docs/addresses.md) | Rich list, address detail, token and NFT holdings, approvals, events, internal transactions, trades, CSV export |
 | [Tokens, NFTs and trades](docs/tokens-and-nfts.md) | Token list, detail, price and holders; token transfers; NFT collections and items; DEX and NFT trades |
 | [Contracts](docs/contracts.md) | Bytecode, opcodes, verified functions, contract reads, verified source |
@@ -163,7 +163,7 @@ A request over a limit gets `429 Too Many Requests` with a problem-details body 
 
 ## Caching
 
-Responses for recent data are cached on the server for a few seconds, so repeated requests within that time return the same data: about 2 seconds for the newest lists and network status, and about 15 seconds for activity, gas and daily statistics. Block and transaction detail for blocks at least 256 blocks below the newest indexed block is final, and is served with `Cache-Control: public, max-age=300`.
+Responses for recent data are cached on the server for a few seconds, so repeated requests within that time return the same data: about 2 seconds for the newest lists, the network status and block countdowns, and about 15 seconds for activity, gas and daily statistics. Block and transaction detail for blocks at least 256 blocks below the newest indexed block is final, and is served with `Cache-Control: public, max-age=300`.
 
 ## Support
 

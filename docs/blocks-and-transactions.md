@@ -4,6 +4,7 @@
 
 - [List blocks](#list-blocks)
 - [Get a block](#get-a-block)
+- [Count down to a block](#count-down-to-a-block)
 - [List transactions](#list-transactions)
 - [Get a transaction](#get-a-transaction)
 - [List internal transactions](#list-internal-transactions)
@@ -133,6 +134,26 @@ Response `200` (trimmed: `extraData` cut from 272 characters)
   "receiptsRoot": "0x25404575e27a7090c3b4cc474357b85f69a33901f443daf80190b275a919deb7",
   "transactionCount": 1
 }
+```
+
+## Count down to a block
+
+`GET /v1/blocks/{number}/countdown`
+
+How far off a block number is, an estimate. The chain's head is estimated from the newest indexed block's age and the mean time per block between it and the oldest of the newest 1,000 indexed blocks, and only while the newest block is fresh by the deployment's sync health (no more than two minutes old by default), so `state` is one of:
+
+| `state` | Meaning |
+| --- | --- |
+| `Countdown` | The block is expected: `remainingBlocks` are left, `estimatedTimestamp` (Unix seconds, rounded up) says when, and `remainingTime` how long that is from the answer; the two are `null` for a number too far ahead to date. |
+| `Reached` | By the estimate the chain has already passed the number, whether or not the block is indexed yet. |
+| `Stale` | The newest indexed block is too old to estimate from. |
+| `Halted` | The number is past the block where the chain's data ends, so it is not expected (FSNEX). Numbers up to that block are `Reached`. |
+| `Unavailable` | Too few blocks are indexed to measure a block time. |
+
+`averageBlockTime` is the time per block used, as a time span, or `null` where none could be measured or none is needed. A number that is not a whole, non-negative block number answers `400`. Count down from `remainingTime` rather than from `estimatedTimestamp` if your clock may be off.
+
+```bash
+curl "https://bnb.blockgaze.com/api/v1/blocks/130000000/countdown"
 ```
 
 ## List transactions
