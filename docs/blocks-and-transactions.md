@@ -564,7 +564,8 @@ One transaction with everything the explorer shows for it:
 - `tokenTransfers`: the token and NFT transfers the transaction made, each with `fromLabel`, `fromTags`, `toLabel` and `toTags` for its sender and recipient
 - `logs`: the event logs, decoded into `eventSignature` and `arguments` where the event is known, each with its emitter's `addressLabel` and `addressTags`, the tags [Get an address](addresses.md#get-an-address) lists
 - `actions`: what the transaction did in plain terms, such as the swaps below, each with the tokens given and received, and `accountLabel`, `accountTags`, `recipientLabel` and `recipientTags` for the account it names and its recipient
-- `operations`: Fusion native operations, on FSNEX, each field with its label, value and `format`; a field whose `format` is `address` carries that address's label and tags in `addressLabel` and `addressTags`, and every other field a `null` label and no tags
+- `operations`: Fusion native operations, on FSNEX, each field with its label, value and `format`; a field whose `format` is `address` carries that address's label and tags in `addressLabel` and `addressTags`, and every other field a `null` label and no tags; an `amount` field's `unit` gives the asset's symbol and decimals, and every other field's is `null`
+- `operations` entries and where they come from: a native call usually appears twice, as the parameters read from its input, whose `source` is `Transaction input`, and as the operation its receipt log recorded, whose `source` is `Receipt log N`, `N` being that log's `logIndex`; `status` says whether the input decoded and, for a log, whether the chain recorded the operation. A call that writes no log appears once, and from block 8,250,000 a transaction, a native call or not, can also carry a `Fusion time-lock maturity conversion` that efsn wrote, which has no input counterpart.
 - `internalTransactions`: the call frames the transaction made, when the deployment traces them, each frame with `fromLabel`, `fromTags`, `toLabel` and `toTags`. `isTraced` is `false` when the transaction's block lies outside `coveredFrom`–`coveredThrough`, and the field is `null` on deployments without tracing.
 
 Tags are those [Get an address](addresses.md#get-an-address) lists, in the same order and shape; an untagged address has an empty list, and an address with no label has a `null` label.
@@ -877,6 +878,155 @@ Response `200`
   "logCount": 0,
   "tokenTransfers": [],
   "logs": []
+}
+```
+
+A Fusion native call, a send of the DAV asset to an address labelled Bittrex:
+
+```bash
+curl "https://fsnex.net/api/v1/transactions/0x82c9c71b35439e3c5b4502eab3ee6b6dec9bdd60c979795da636b2cf592737d2"
+```
+
+Response `200` (trimmed: `logs.data` cut from 326 characters)
+
+```json
+{
+  "operations": [
+    {
+      "name": "Fusion asset transfer",
+      "source": "Transaction input",
+      "status": "Attempted parameters",
+      "fields": [
+        {
+          "addressLabel": null,
+          "addressTags": [],
+          "label": "Asset ID",
+          "value": "0x46992f33b0cce4fbee9af575cb4de6c5cb748b535670477f834780db851ed0ac",
+          "format": "asset",
+          "unit": null
+        },
+        {
+          "addressLabel": "Bittrex",
+          "addressTags": [],
+          "label": "Recipient",
+          "value": "0x9996c35cdb692de8a76397e83b9a30982f1b0692",
+          "format": "address",
+          "unit": null
+        },
+        {
+          "addressLabel": null,
+          "addressTags": [],
+          "label": "Amount",
+          "value": "22482752736800000000000",
+          "format": "amount",
+          "unit": {
+            "symbol": "DAV",
+            "decimals": 18
+          }
+        }
+      ]
+    },
+    {
+      "name": "Fusion asset transfer",
+      "source": "Receipt log 11",
+      "status": "Recorded native operation",
+      "fields": [
+        {
+          "addressLabel": null,
+          "addressTags": [],
+          "label": "Asset ID",
+          "value": "0x46992f33b0cce4fbee9af575cb4de6c5cb748b535670477f834780db851ed0ac",
+          "format": "asset",
+          "unit": null
+        },
+        {
+          "addressLabel": "Bittrex",
+          "addressTags": [],
+          "label": "Recipient",
+          "value": "0x9996c35cdb692de8a76397e83b9a30982f1b0692",
+          "format": "address",
+          "unit": null
+        },
+        {
+          "addressLabel": null,
+          "addressTags": [],
+          "label": "Amount",
+          "value": "22482752736800000000000",
+          "format": "amount",
+          "unit": {
+            "symbol": "DAV",
+            "decimals": 18
+          }
+        }
+      ]
+    }
+  ],
+  "actions": [],
+  "inputEncoding": "Fusion native RLP",
+  "inputText": null,
+  "methodSource": null,
+  "feeBreakdown": {
+    "gasFee": "25832000000000",
+    "additionalFee": "0",
+    "additionalFeeLabel": "Native operation fee",
+    "totalFee": "25832000000000"
+  },
+  "internalTransactions": {
+    "isTraced": true,
+    "coveredFrom": 0,
+    "coveredThrough": 9093778,
+    "error": null,
+    "revertReason": null,
+    "frames": []
+  },
+  "fromLabel": null,
+  "fromTags": [],
+  "toLabel": "Fusion Native Calls",
+  "toTags": [],
+  "createdContractLabel": null,
+  "createdContractTags": [],
+  "kind": "ContractInteraction",
+  "fee": "25832000000000",
+  "blockNumber": 3013245,
+  "transactionIndex": 5,
+  "hash": "0x82c9c71b35439e3c5b4502eab3ee6b6dec9bdd60c979795da636b2cf592737d2",
+  "blockHash": "0x05d446e1617ee29545a7086ae07d259788abee3c88b4cfd9cfbffbf3eb0d5700",
+  "timestamp": 1601364788,
+  "from": "0x3fe42260e3d4b0c29d2da2a7cdc271a6f5d9ef72",
+  "to": "0xffffffffffffffffffffffffffffffffffffffff",
+  "createdContract": null,
+  "value": "0",
+  "gas": 90000,
+  "gasUsed": 25832,
+  "gasPrice": "1000000000",
+  "effectiveGasPrice": "1000000000",
+  "maxFeePerGas": null,
+  "maxPriorityFeePerGas": null,
+  "nonce": 116,
+  "input": "0xf84602b843f841a046992f33b0cce4fbee9af575cb4de6c5cb748b535670477f834780db851ed0ac949996c35cdb692de8a76397e83b9a30982f1b06928a04c2cadf2f63f1654000",
+  "method": "Fusion asset transfer",
+  "methodArguments": null,
+  "type": 0,
+  "chainId": null,
+  "succeeded": true,
+  "logCount": 1,
+  "tokenTransfers": [],
+  "logs": [
+    {
+      "removed": false,
+      "eventSource": null,
+      "logIndex": 11,
+      "address": "0xffffffffffffffffffffffffffffffffffffffff",
+      "addressLabel": "Fusion Native Calls",
+      "addressTags": [],
+      "topics": [
+        "0x0000000000000000000000000000000000000000000000000000000000000002"
+      ],
+      "data": "0x7b2241737365744944223a223078343639393266333362306363653466626565…",
+      "eventSignature": null,
+      "arguments": null
+    }
+  ]
 }
 ```
 
