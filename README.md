@@ -2,7 +2,7 @@
 
 BlockGaze indexes EVM chains into a database and serves the indexed records through the explorer and through a read-only HTTP API. The API returns the same blocks, transactions, addresses, tokens, trades and statistics that the explorer pages show, as JSON.
 
-This repository documents the API as it runs on the two public BlockGaze deployments. Every example response in these pages was captured from a live deployment on 16 October 2026, except those that show address tags, which were captured on 17 October 2026, and those of the block countdown, the internal transaction list, an address's swap offers, network status and transaction details, which were captured on 18 October 2026.
+This repository documents the API as it runs on the two public BlockGaze deployments. Every example response in these pages was captured from a live deployment on 16 October 2026, except those that show address tags, which were captured on 17 October 2026, and those of the block countdown, the internal transaction list, an address's swap offers, network status, transaction details, the staked supply and FSNEX's supply, which were captured on 18 October 2026.
 
 ## Deployments and base URLs
 
@@ -26,6 +26,7 @@ Some endpoints exist only on the chain they describe. `GET /v1/network` lists wh
 | --- | --- | --- | --- |
 | Fusion assets, swaps, tickets, USANs, supply | Yes | No | [Fusion](docs/fusion.md) |
 | Stake distribution and staked history | Yes | Yes | [`/v1/stake-distribution`](docs/network.md#stake-distribution), [`/v1/statistics/staked`](docs/network.md#daily-staked-amount) |
+| Staked supply | Yes | Yes | [`/v1/staked-supply`](docs/network.md#staked-supply) |
 | Market data (native currency price) | No | Yes | [`/v1/market`](docs/network.md#market-data) |
 | StakeHub staking total | No | Yes | [`/v1/staking`](docs/network.md#staking-total) |
 | SPACE ID names | No | Yes | [`/v1/addresses/{address}/name`](docs/addresses.md#primary-name) |
@@ -61,7 +62,7 @@ Use the document to generate a client in your language. The document states ever
 
 | Area | Endpoints |
 | --- | --- |
-| [Network and statistics](docs/network.md) | Network status, activity, sync status, gas, daily statistics, block producers, stake distribution, labels, search, market data, staking |
+| [Network and statistics](docs/network.md) | Network status, activity, sync status, gas, daily statistics, block producers, staked supply, stake distribution, labels, search, market data, staking |
 | [Blocks and transactions](docs/blocks-and-transactions.md) | Block list, detail and countdown, transaction list (by block, address or operation) and detail, internal transaction list |
 | [Addresses](docs/addresses.md) | Rich list, address detail, token and NFT holdings, approvals, events, internal transactions, trades, CSV export |
 | [Tokens, NFTs and trades](docs/tokens-and-nfts.md) | Token list, detail, price and holders; token transfers; NFT collections and items; DEX and NFT trades |
@@ -165,7 +166,7 @@ A request over a limit gets `429 Too Many Requests` with a problem-details body 
 
 ## Caching
 
-Responses for recent data are cached on the server for a few seconds, so repeated requests within that time return the same data: about 2 seconds for the newest lists, the network status and block countdowns, and about 15 seconds for activity, gas and daily statistics. Block and transaction detail for blocks at least 256 blocks below the newest indexed block is final, and is served with `Cache-Control: public, max-age=300`.
+Responses for recent data are cached on the server for a few seconds, so repeated requests within that time return the same data: about 2 seconds for the newest lists, the network status and block countdowns, and about 15 seconds for activity, gas, daily statistics, the stake distribution and the staked supply. Block and transaction detail for blocks at least 256 blocks below the newest indexed block is final, and is served with `Cache-Control: public, max-age=300`.
 
 ## Support
 

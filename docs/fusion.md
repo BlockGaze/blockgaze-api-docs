@@ -990,7 +990,7 @@ Response `200`
 
 `GET /v1/fusion/supply`
 
-FSN supply at the final block: genesis allocation, maximum supply, issued and total supply, block issuance and the block at which it next changes, the staked share, and balances of labelled groups of addresses.
+FSN supply at the final block: genesis allocation, maximum supply, issued and total supply, block issuance and the block at which it next changes, the staked share, and balances of labelled groups of addresses. `staking` is the chain's ticket summary, the same object [Staking summary](#staking-summary) returns, read from the same live tickets as `staked`.
 
 ```bash
 curl "https://fsnex.net/api/v1/fusion/supply"
@@ -1015,6 +1015,20 @@ Response `200` (trimmed: `labelGroups` shows 2 of 12)
     "value": "2455000000000000000000000",
     "totalSupply": "78968147812500000000000000",
     "share": 0.031088
+  },
+  "staking": {
+    "available": true,
+    "projectedThroughBlock": 15130080,
+    "evaluatedAt": "2025-10-07T08:43:50+00:00",
+    "liveTickets": 491,
+    "liveOwners": 8,
+    "liveValue": "2455000000000000000000000",
+    "validTickets": 491,
+    "validOwners": 8,
+    "validValue": "2455000000000000000000000",
+    "validShare": 0.031088,
+    "expiredTickets": 0,
+    "futureTickets": 0
   },
   "labelGroups": [
     {

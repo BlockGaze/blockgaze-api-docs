@@ -10,6 +10,7 @@
 - [Daily staked amount](#daily-staked-amount)
 - [Block producers](#block-producers)
 - [Block producer history](#block-producer-history)
+- [Staked supply](#staked-supply)
 - [Stake distribution](#stake-distribution)
 - [Labels](#labels)
 - [Search](#search)
@@ -38,6 +39,7 @@ Response `200`
     "fusionStaking": false,
     "stakeDistribution": true,
     "stakedHistory": true,
+    "stakedSupply": true,
     "marketData": true,
     "stakeHubStaking": true,
     "spaceIdNames": true
@@ -48,10 +50,10 @@ Response `200`
   "chainId": 56,
   "nativeCurrencySymbol": "BNB",
   "nativeCurrencyDecimals": 18,
-  "indexedFromBlock": 127990000,
-  "indexedFromTimestamp": 1792158917,
-  "indexedToBlock": 128396677,
-  "latestBlockTimestamp": 1792341976,
+  "indexedFromBlock": 128030000,
+  "indexedFromTimestamp": 1792176923,
+  "indexedToBlock": 128430502,
+  "latestBlockTimestamp": 1792357200,
   "tracedFromBlock": null,
   "tracedToBlock": null,
   "statisticsFromTimestamp": 1790791966,
@@ -82,6 +84,7 @@ Response `200` (trimmed: `transactionOperationKinds` shows 2 of 10)
     "fusionStaking": true,
     "stakeDistribution": true,
     "stakedHistory": true,
+    "stakedSupply": true,
     "marketData": false,
     "stakeHubStaking": false,
     "spaceIdNames": false
@@ -115,7 +118,7 @@ Response `200` (trimmed: `transactionOperationKinds` shows 2 of 10)
   "indexedToBlock": 15130080,
   "latestBlockTimestamp": 1759826630,
   "tracedFromBlock": 0,
-  "tracedToBlock": 8859278,
+  "tracedToBlock": 9023638,
   "statisticsFromTimestamp": 1561852800,
   "halt": {
     "block": 15130080,
@@ -438,6 +441,33 @@ Response `200`
       "reward": "548357217199056656512"
     }
   ]
+}
+```
+
+## Staked supply
+
+`GET /v1/staked-supply`
+
+How much of the native currency is staked, and its share of the total supply: the figure the explorer's home page shows. Served where `features.stakedSupply` is `true`, which is both deployments. On BNB Smart Chain it is StakeHub's newest recorded total, beside the total supply of the newest market quote; on FSNEX it is the FSN held by the tickets valid at the time of the block the ticket projection has reached, beside the total supply after that block (genesis plus issuance through it).
+
+- `available`: `false` while the chain has nothing complete to say, as before a first StakeHub sample or while FSNEX's ticket history from genesis is not indexed; every other field is then `null`.
+- `asOfBlock`, `asOfTimestamp`: when the figure was taken. On BNB Smart Chain the sample is read from StakeHub with the node at block `asOfBlock`, which can be newer than the newest indexed block, and `asOfTimestamp` (Unix seconds) is when the reading was recorded; on FSNEX they are the block the ticket projection has reached and that block's time.
+- `amount`: the staked amount in the native currency's smallest unit, as a string.
+- `share`: `amount` as a fraction of the total supply, truncated to six digits, or `null` where the supply is not known, as on a BNB Smart Chain network without market data.
+
+```bash
+curl "https://bnb.blockgaze.com/api/v1/staked-supply"
+```
+
+Response `200`
+
+```json
+{
+  "available": true,
+  "asOfBlock": 128429558,
+  "asOfTimestamp": 1792356809,
+  "amount": "24189608927739788315672255",
+  "share": 0.18166
 }
 ```
 
