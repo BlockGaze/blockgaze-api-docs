@@ -156,6 +156,19 @@ How far off a block number is, an estimate. The chain's head is estimated from t
 curl "https://bnb.blockgaze.com/api/v1/blocks/130000000/countdown"
 ```
 
+Response `200`
+
+```json
+{
+  "targetBlock": 130000000,
+  "state": "Countdown",
+  "remainingBlocks": 1603325,
+  "estimatedTimestamp": 1793064195,
+  "remainingTime": "8.08:36:58.8782874",
+  "averageBlockTime": "00:00:00.4504505"
+}
+```
+
 ## List transactions
 
 `GET /v1/transactions`
@@ -658,6 +671,7 @@ Response `200` (trimmed: `actions` shows 2 of 3; `input` cut from 320 characters
     }
   ],
   "inputEncoding": null,
+  "inputText": null,
   "methodSource": null,
   "feeBreakdown": {
     "gasFee": "3328935851064514",
@@ -668,7 +682,7 @@ Response `200` (trimmed: `actions` shows 2 of 3; `input` cut from 320 characters
   "internalTransactions": {
     "isTraced": false,
     "coveredFrom": 0,
-    "coveredThrough": 7901400,
+    "coveredThrough": 8858098,
     "error": null,
     "revertReason": null,
     "frames": []
@@ -826,6 +840,7 @@ Response `200`
   "operations": [],
   "actions": [],
   "inputEncoding": null,
+  "inputText": null,
   "methodSource": null,
   "feeBreakdown": null,
   "internalTransactions": null,
@@ -883,4 +898,39 @@ Each page reads a bounded number of the chain's frames, so a page can hold fewer
 
 ```bash
 curl "https://fsnex.net/api/v1/internal-transactions?pageSize=1"
+```
+
+Response `200`
+
+```json
+{
+  "transactions": [
+    {
+      "blockNumber": 8859218,
+      "transactionIndex": 2,
+      "transactionHash": "0xcb02422af225e9bfcc63ea1fb4eb35bac1676a2a8add86b1dc2afe1b5986bd36",
+      "timestamp": 1677855477,
+      "frame": {
+        "notes": [],
+        "fromLabel": "Anyswap: FSN/aUSDT Exchange",
+        "fromTags": [],
+        "toLabel": null,
+        "toTags": [],
+        "traceAddress": "0_4_0_1",
+        "type": "call",
+        "from": "0x78917333bec47cee1022b31a136d31feff90d6fb",
+        "to": "0xcc4461636684868aab71037b29a11cc643e64500",
+        "value": "57159296401098786",
+        "gas": 2300,
+        "error": null,
+        "revertReason": null,
+        "undone": false,
+        "movedValue": true
+      }
+    }
+  ],
+  "nextCursor": "8859218-2-00000000000000040000000000000001",
+  "coveredFrom": 0,
+  "coveredThrough": 8859238
+}
 ```

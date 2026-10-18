@@ -16,6 +16,7 @@ The native FSN currency is asset `0xffffffffffffffffffffffffffffffffffffffffffff
 - [Swap offers](#swap-offers)
 - [Get a swap](#get-a-swap)
 - [Address swaps](#address-swaps)
+- [Address swap offers](#address-swap-offers)
 - [Staking summary](#staking-summary)
 - [Address tickets](#address-tickets)
 - [Get a ticket](#get-a-ticket)
@@ -429,7 +430,7 @@ Response `200`
 
 `GET /v1/fusion/swaps/offers`
 
-Swap offers, most recently made first, each with its status (such as `Open` or `Filled`), its maker's label and tags in `makerLabel` and `makerTags`, what it offers and requests per part, how many parts remain, and its takes, each with its sender's in `accountLabel` and `accountTags`. Tags are those [Get an address](addresses.md#get-an-address) lists, in the same order and shape; an untagged address has an empty list, and an address with no label has a `null` label.
+Swap offers still open, most recently made first, each with its status (always `Open` here; [Address swap offers](#address-swap-offers) lists an address's filled and recalled ones too), its maker's label and tags in `makerLabel` and `makerTags`, what it offers and requests per part, how many parts remain, and its takes, each with its sender's in `accountLabel` and `accountTags`. Tags are those [Get an address](addresses.md#get-an-address) lists, in the same order and shape; an untagged address has an empty list, and an address with no label has a `null` label.
 
 | Parameter | Default | Description |
 | --- | --- | --- |
@@ -704,6 +705,133 @@ Response `200`
     }
   ],
   "nextCursor": null,
+  "previousCursor": null,
+  "total": null
+}
+```
+
+## Address swap offers
+
+`GET /v1/fusion/addresses/{address}/swaps/offers`
+
+The swap offers the address made, most recently made first, whatever became of them: each with its `status` (`Open`, `Filled` or `Recalled`), how many parts remain while it is open, what it offers and requests per part, its takes and its recall, as in [Swap offers](#swap-offers), which lists only the chain's open ones. A take of one of these offers is also in [Address swaps](#address-swaps).
+
+| Parameter | Default | Description |
+| --- | --- | --- |
+| `pageSize` | `25` | Offers per page, at most 100. |
+| `cursor`, `last`, `count`, `page`, `from` | | See [pagination](../README.md#pagination). |
+
+An address that is not 20 bytes of hex answers `400`.
+
+```bash
+curl "https://fsnex.net/api/v1/fusion/addresses/0x8148e2dbec9881d735fe184393bfa89e9d4c11bf/swaps/offers?pageSize=2"
+```
+
+Response `200`
+
+```json
+{
+  "offers": [
+    {
+      "makerLabel": null,
+      "makerTags": [],
+      "swapId": "0xc3bea168ff2933a9b89bd82a5ce2f3b5efcc5458184b30483a56de261cf31b02",
+      "status": "Filled",
+      "maker": "0x8148e2dbec9881d735fe184393bfa89e9d4c11bf",
+      "creationBlock": 2364756,
+      "creationTransaction": "0xd11e2fe6d9aee9adf7a70831e07c699a73bc204a9f24983e1f669ed46e2ac7ce",
+      "createdAt": 1592829081,
+      "parts": "1",
+      "remainingParts": null,
+      "description": null,
+      "targets": [],
+      "offeredPerPart": [
+        {
+          "assetId": "0x04084ac2252d4d43a3738836e6de0952316f32e48c739d03f40ef2f55f6a3157",
+          "isNotation": false,
+          "standing": "Unbacked",
+          "symbol": "GEO",
+          "decimals": 18,
+          "amount": "6076000000000000000000",
+          "timeLockStart": null,
+          "timeLockEnd": null
+        }
+      ],
+      "requestedPerPart": [
+        {
+          "assetId": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "isNotation": false,
+          "standing": "Native",
+          "symbol": "FSN",
+          "decimals": 18,
+          "amount": "1000000000000000000",
+          "timeLockStart": null,
+          "timeLockEnd": null
+        }
+      ],
+      "takes": [
+        {
+          "accountLabel": null,
+          "accountTags": [],
+          "blockNumber": 13630056,
+          "transactionHash": "0xa6705b3154472bce55caac7d3033657b9d7248668312761755f7da061adbbaeb",
+          "timestamp": 1740254022,
+          "account": "0xfb5801158426bb143a5ce43dba0eae4eae2f1fc9",
+          "parts": "1"
+        }
+      ],
+      "recall": null
+    },
+    {
+      "makerLabel": null,
+      "makerTags": [],
+      "swapId": "0x9cdcd156f632a9302594b88718f30ebefaa284adbb77ee6287a7bde4524dea33",
+      "status": "Recalled",
+      "maker": "0x8148e2dbec9881d735fe184393bfa89e9d4c11bf",
+      "creationBlock": 121887,
+      "creationTransaction": "0x90c81cf8457bbe5590f69971e443c899012c3d1b304be9411d8cfd2621a6540b",
+      "createdAt": 1563488079,
+      "parts": "100",
+      "remainingParts": null,
+      "description": null,
+      "targets": [],
+      "offeredPerPart": [
+        {
+          "assetId": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "isNotation": false,
+          "standing": "Native",
+          "symbol": "FSN",
+          "decimals": 18,
+          "amount": "8000000000000000000",
+          "timeLockStart": null,
+          "timeLockEnd": null
+        }
+      ],
+      "requestedPerPart": [
+        {
+          "assetId": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "isNotation": false,
+          "standing": "Native",
+          "symbol": "FSN",
+          "decimals": 18,
+          "amount": "50000000000000000000",
+          "timeLockStart": "0",
+          "timeLockEnd": "1587254400"
+        }
+      ],
+      "takes": [],
+      "recall": {
+        "accountLabel": null,
+        "accountTags": [],
+        "blockNumber": 135188,
+        "transactionHash": "0xa4d22e1d35e1167480734a9d4e805f37ec477a463019aa81a20307db9b4617cb",
+        "timestamp": 1563661727,
+        "account": "0x8148e2dbec9881d735fe184393bfa89e9d4c11bf",
+        "parts": null
+      }
+    }
+  ],
+  "nextCursor": "121887-1",
   "previousCursor": null,
   "total": null
 }
