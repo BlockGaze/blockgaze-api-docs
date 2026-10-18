@@ -6,6 +6,7 @@
 - [Get a block](#get-a-block)
 - [List transactions](#list-transactions)
 - [Get a transaction](#get-a-transaction)
+- [List internal transactions](#list-internal-transactions)
 
 ## List blocks
 
@@ -840,4 +841,24 @@ Response `200`
   "tokenTransfers": [],
   "logs": []
 }
+```
+
+## List internal transactions
+
+`GET /v1/internal-transactions`
+
+The call frames inside the chain's transactions that moved native coin or created or destroyed a contract, newest first. Each item has the shape of an [address's internal transactions](addresses.md#internal-transactions) without `direction`, since the list names no address: `frame.movedValue` says whether the frame actually moved value, and the `frame` labels and tags name each side.
+
+Only blocks from `coveredFrom` to `coveredThrough` have been traced, the same range [`/v1/network`](network.md#network-status) gives as `tracedFromBlock` and `tracedToBlock`; where nothing is traced, as on BNB Smart Chain, both are `null` and the list is empty.
+
+Each page reads a bounded number of the chain's frames, so a page can hold fewer items than asked for, or none, and still give a `nextCursor`: frames that moved nothing were passed over, and the next page goes on from there. A `nextCursor` of `null` means the oldest traced frame was reached.
+
+| Parameter | Default | Description |
+| --- | --- | --- |
+| `kind` | `all` | `all` for every frame that moved coin or created or destroyed a contract, or `transfers` for frames that carry value. |
+| `pageSize` | `25` | Frames per page, at most 50. |
+| `cursor` | | The `nextCursor` of the previous page. |
+
+```bash
+curl "https://fsnex.net/api/v1/internal-transactions?pageSize=1"
 ```

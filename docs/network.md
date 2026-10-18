@@ -20,7 +20,7 @@
 
 `GET /v1/network`
 
-The chain the deployment indexes, the feature sets it serves, and the range of blocks it holds. Read this first: `indexedFromBlock` and `indexedToBlock` give the retained range, `historyState` says whether the chain is live (`Live`) or halted and complete (`HaltedComplete`), and `refresh` gives how often the explorer polls each kind of data on a live chain.
+The chain the deployment indexes, the feature sets it serves, and the range of blocks it holds. Read this first: `indexedFromBlock` and `indexedToBlock` give the retained range, `historyState` says whether the chain is live (`Live`) or halted and complete (`HaltedComplete`), and `refresh` gives how often the explorer polls each kind of data on a live chain. `tracedFromBlock` and `tracedToBlock` give the blocks whose internal transactions have been traced, the range the [internal transaction list](blocks-and-transactions.md#list-internal-transactions) covers, and are both `null` where none is.
 
 `transactionOperationKinds` lists the values the [transaction list](blocks-and-transactions.md#list-transactions) accepts for `operation`, and `exportContentKinds` lists the chain-specific values the [CSV export](addresses.md#csv-export) accepts for `content`.
 
