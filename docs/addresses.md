@@ -257,12 +257,12 @@ Response `200`
 
 `GET /v1/addresses/{address}/approvals/tokens`
 
-The token allowances the address has granted: token, spender with its `spenderLabel` and `spenderTags`, and amount, with `isUnlimited` for the maximum uint256 allowance. Tags are those [Get an address](#get-an-address) lists, in the same order and shape; an untagged address has an empty list. `allowancesReadToBlock` is the block the allowances were read to, and is `null` on a deployment that does not track allowances, such as BNB Smart Chain.
+The token allowances the address has granted, ordered by token and then spender: token, spender with its `spenderLabel` and `spenderTags`, and amount, with `isUnlimited` for the maximum uint256 allowance. Tags are those [Get an address](#get-an-address) lists, in the same order and shape; an untagged address has an empty list. `allowancesReadToBlock` is the block the allowances were read to, and is `null` on a deployment that does not track allowances, such as BNB Smart Chain.
 
 | Parameter | Default | Description |
 | --- | --- | --- |
 | `pageSize` | `50` | Approvals per page, at most 100. |
-| `cursor` | | The `nextCursor` of the previous page. |
+| `cursor`, `last`, `count`, `page` | | See [pagination](../README.md#pagination). This list is not in block order, so it does not accept `from`, and `page` reaches only the first 100,000 allowances. |
 
 ```bash
 curl "https://fsnex.net/api/v1/addresses/0x66ff2f0ac3214758d1e61b16b41e3d5e62caecf1/approvals/tokens?pageSize=1"
@@ -287,6 +287,8 @@ Response `200`
     }
   ],
   "nextCursor": "0x00b4c5e53e50f3c5b65e7f303d8b8cb15a8d459b-0x3668c219b1fa8fe8175158f6ce91ded36fde9152",
+  "previousCursor": null,
+  "total": null,
   "allowancesReadToBlock": 15130080
 }
 ```
@@ -344,7 +346,7 @@ The event logs a contract emitted, newest first, decoded into `eventSignature` a
 | Parameter | Default | Description |
 | --- | --- | --- |
 | `pageSize` | `25` | Events per page, at most 25. |
-| `cursor` | | The `nextCursor` of the previous page. |
+| `cursor`, `last`, `count`, `page`, `from` | | See [pagination](../README.md#pagination). |
 
 ```bash
 curl "https://fsnex.net/api/v1/addresses/0x049ddc3cd20ac7a2f6c867680f7e21de70aca9c3/events?pageSize=1"
@@ -395,6 +397,8 @@ Response `200`
     }
   ],
   "nextCursor": "13299771-2-14",
+  "previousCursor": null,
+  "total": null,
   "isIndexed": true
 }
 ```
