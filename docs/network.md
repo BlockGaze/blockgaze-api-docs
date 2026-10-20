@@ -21,7 +21,9 @@
 
 `GET /v1/network`
 
-The chain the deployment indexes, the feature sets it serves, and the range of blocks it holds. Read this first: `indexedFromBlock` and `indexedToBlock` give the retained range, `historyState` says whether the chain is live (`Live`) or halted and complete (`HaltedComplete`), and `refresh` gives how often the explorer polls each kind of data on a live chain. `tracedFromBlock` and `tracedToBlock` give the blocks whose internal transactions have been traced, the range the [internal transaction list](blocks-and-transactions.md#list-internal-transactions) covers, and are both `null` where no block has been traced.
+The chain the deployment indexes, the feature sets it serves, and the range of blocks it holds. Read this first: `indexedFromBlock` and `indexedToBlock` give the retained range, `historyState` says whether the chain is live (`Live`) or halted and complete (`HaltedComplete`), and `refresh` gives how often the explorer polls each kind of data on a live chain. `tracedFromBlock` and `tracedToBlock` give the blocks whose internal transactions have been traced, the range the [internal transaction list](blocks-and-transactions.md#list-internal-transactions) covers, and are both `null` where no block has been traced. `tracingEnabled` says whether the deployment traces new blocks: where it is `false` the traced range stays readable but no longer grows, as on a deployment that switched tracing off after it ran.
+
+`features` holds one flag for each feature set, `true` where the deployment serves it: `marketData`, `stakeHubStaking` and `spaceIdNames` (BNB Smart Chain), `fusionAssets` and `fusionStaking` (FSNEX), `stakeDistribution`, `stakedHistory` and `stakedSupply` (both), and `sourcify`, `true` where the chain is one [Sourcify](https://sourcify.dev) lists, so the deployment may import the verified sources Sourcify holds into the verified contracts its contract pages read (BNB Smart Chain; a deployment can still leave the import off). A client should read a flag rather than assume one from the chain.
 
 `transactionOperationKinds` lists the values the [transaction list](blocks-and-transactions.md#list-transactions) accepts for `operation`, and `exportContentKinds` lists the chain-specific values the [CSV export](addresses.md#csv-export) accepts for `content`.
 
@@ -42,7 +44,8 @@ Response `200`
     "stakedSupply": true,
     "marketData": true,
     "stakeHubStaking": true,
-    "spaceIdNames": true
+    "spaceIdNames": true,
+    "sourcify": true
   },
   "transactionOperationKinds": [],
   "exportContentKinds": [],
@@ -50,12 +53,13 @@ Response `200`
   "chainId": 56,
   "nativeCurrencySymbol": "BNB",
   "nativeCurrencyDecimals": 18,
-  "indexedFromBlock": 128030000,
-  "indexedFromTimestamp": 1792176923,
-  "indexedToBlock": 128430502,
-  "latestBlockTimestamp": 1792357200,
+  "indexedFromBlock": 128390000,
+  "indexedFromTimestamp": 1792338970,
+  "indexedToBlock": 128793732,
+  "latestBlockTimestamp": 1792520738,
   "tracedFromBlock": null,
   "tracedToBlock": null,
+  "tracingEnabled": false,
   "statisticsFromTimestamp": 1790791966,
   "halt": null,
   "totalSupply": null,
@@ -87,7 +91,8 @@ Response `200` (trimmed: `transactionOperationKinds` shows 2 of 10)
     "stakedSupply": true,
     "marketData": false,
     "stakeHubStaking": false,
-    "spaceIdNames": false
+    "spaceIdNames": false,
+    "sourcify": false
   },
   "transactionOperationKinds": [
     {
@@ -118,7 +123,8 @@ Response `200` (trimmed: `transactionOperationKinds` shows 2 of 10)
   "indexedToBlock": 15130080,
   "latestBlockTimestamp": 1759826630,
   "tracedFromBlock": 0,
-  "tracedToBlock": 9023638,
+  "tracedToBlock": 11377063,
+  "tracingEnabled": true,
   "statisticsFromTimestamp": 1561852800,
   "halt": {
     "block": 15130080,
