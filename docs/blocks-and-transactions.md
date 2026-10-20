@@ -1038,13 +1038,16 @@ The call frames inside the chain's transactions that carry native coin or create
 
 Only blocks from `coveredFrom` to `coveredThrough` have been traced, the same range [`/v1/network`](network.md#network-status) gives as `tracedFromBlock` and `tracedToBlock`; where nothing is traced, as on BNB Smart Chain, both are `null`, and the list is empty whenever `coveredFrom` is `null`.
 
-A page holds as many items as asked for unless the oldest traced frame is reached, when `nextCursor` is `null`. While a deployment is still building the index this list reads through, once after the upgrade that added it, each page reads a bounded number of the chain's frames instead, so a page can hold fewer items than asked for, or none, and still give a `nextCursor`: frames the chosen kind leaves out were passed over, and the next page goes on from there.
+A page holds as many items as asked for unless the oldest traced frame is reached, when `nextCursor` is `null`; the newest page's `previousCursor` is `null`. While a deployment is still building the index this list reads through, once after the upgrade that added it, each page reads a bounded number of the chain's frames instead, so a page can hold fewer items than asked for, or none, and still give a cursor: frames the chosen kind leaves out were passed over, and the next page goes on from there.
+
+`fromBlock` and `toBlock` give the blocks a page covers, in place of record numbers, both `null` only when the page read no frame. The list has no `count` and no jump, and a `previousCursor` that reaches the newest frames returns the first page.
 
 | Parameter | Default | Description |
 | --- | --- | --- |
 | `kind` | `all` | `all` for every frame that carries a value or creates or destroys a contract, or `transfers` for frames that carry value. |
-| `pageSize` | `25` | Frames per page, at most 50. |
-| `cursor` | | The `nextCursor` of the previous page. |
+| `pageSize` | `25` | Frames per page, at most 100. |
+| `cursor` | | The `nextCursor` or `previousCursor` of the page you have. |
+| `last` | `false` | `true` returns the oldest page. |
 
 ```bash
 curl "https://fsnex.net/api/v1/internal-transactions?pageSize=1"
@@ -1056,22 +1059,22 @@ Response `200`
 {
   "transactions": [
     {
-      "blockNumber": 8859218,
+      "blockNumber": 11376850,
       "transactionIndex": 2,
-      "transactionHash": "0xcb02422af225e9bfcc63ea1fb4eb35bac1676a2a8add86b1dc2afe1b5986bd36",
-      "timestamp": 1677855477,
+      "transactionHash": "0xf5b5516c3d1de041fb949ab96316612162c96da93ad72e80227b58cf6dfa9782",
+      "timestamp": 1710860423,
       "frame": {
         "notes": [],
-        "fromLabel": "Anyswap: FSN/aUSDT Exchange",
+        "fromLabel": null,
         "fromTags": [],
         "toLabel": null,
         "toTags": [],
-        "traceAddress": "0_4_0_1",
+        "traceAddress": "1_1",
         "type": "call",
-        "from": "0x78917333bec47cee1022b31a136d31feff90d6fb",
-        "to": "0xcc4461636684868aab71037b29a11cc643e64500",
-        "value": "57159296401098786",
-        "gas": 2300,
+        "from": "0x62bc5327868a998e1b3d9fe6037273e642a137ae",
+        "to": "0x8fdc02dc969a22c02ddffd3d8b547fab3d7702fe",
+        "value": "999545651774693173696",
+        "gas": 417706,
         "error": null,
         "revertReason": null,
         "undone": false,
@@ -1079,8 +1082,11 @@ Response `200`
       }
     }
   ],
-  "nextCursor": "8859218-2-00000000000000040000000000000001",
+  "nextCursor": "11376850-2-0000000100000001",
+  "previousCursor": null,
+  "fromBlock": 11376850,
+  "toBlock": 11376850,
   "coveredFrom": 0,
-  "coveredThrough": 8859238
+  "coveredThrough": 11376863
 }
 ```

@@ -407,11 +407,14 @@ The call frames inside transactions that the address sent or received, newest fi
 
 Only blocks from `coveredFrom` to `coveredThrough` have been traced. On FSNEX the trace is still being extended through the chain's history; on BNB Smart Chain internal transactions are not traced, and both fields are `null`.
 
+A page of `transfers` is found among a bounded number of the address's frames, so it can hold fewer items than asked for, or none, and still give a cursor onward. So `fromBlock` and `toBlock` give the blocks the page covers in place of record numbers, both `null` only when the page read no frame; the list has no `count` and no jump. A `previousCursor` that reaches the newest frames returns the first page, whose `previousCursor` is `null`.
+
 | Parameter | Default | Description |
 | --- | --- | --- |
 | `kind` | `all` | `all` for every frame that carries a value or creates or destroys a contract, or `transfers` for frames that carry value. |
-| `pageSize` | `25` | Frames per page, at most 50. |
-| `cursor` | | The `nextCursor` of the previous page. |
+| `pageSize` | `25` | Frames per page, at most 100. |
+| `cursor` | | The `nextCursor` or `previousCursor` of the page you have. |
+| `last` | `false` | `true` returns the oldest page. |
 
 ```bash
 curl "https://fsnex.net/api/v1/addresses/0x049ddc3cd20ac7a2f6c867680f7e21de70aca9c3/internal-transactions?pageSize=1"
@@ -423,10 +426,10 @@ Response `200`
 {
   "transactions": [
     {
-      "blockNumber": 7900134,
-      "transactionIndex": 8,
-      "transactionHash": "0x95a2a0103c30f053862daf49e9eb286f677d836a2b8aa587bcc7073d87d80cb1",
-      "timestamp": 1665283448,
+      "blockNumber": 11357942,
+      "transactionIndex": 2,
+      "transactionHash": "0xb32d17b79cdf4b637c7fb6840c5e181ab62acb12f04f8b889d0a0e6693a7f7c7",
+      "timestamp": 1710613384,
       "frame": {
         "notes": [],
         "fromLabel": "Anyswap: FSN/ANY Exchange",
@@ -436,8 +439,8 @@ Response `200`
         "traceAddress": "0_1",
         "type": "call",
         "from": "0x049ddc3cd20ac7a2f6c867680f7e21de70aca9c3",
-        "to": "0x44122c81878b8a4b2eb67285aeec7732c2d8a272",
-        "value": "963986621885776712687",
+        "to": "0xb4926dea9bc87d795a3ba49d2307c49c94a3ac4a",
+        "value": "653592941908544872150",
         "gas": 2300,
         "error": null,
         "revertReason": null,
@@ -447,9 +450,12 @@ Response `200`
       "direction": "Out"
     }
   ],
-  "nextCursor": "7900134-8-0000000000000001",
+  "nextCursor": "11357942-2-0000000000000001",
+  "previousCursor": null,
+  "fromBlock": 11357942,
+  "toBlock": 11357942,
   "coveredFrom": 0,
-  "coveredThrough": 7901380
+  "coveredThrough": 11376863
 }
 ```
 
