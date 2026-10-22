@@ -2,7 +2,7 @@
 
 BlockGaze indexes EVM chains into a database and serves the indexed records through the explorer and through a read-only HTTP API. The API returns the same blocks, transactions, addresses, tokens, trades and statistics that the explorer pages show, as JSON.
 
-This repository documents the API as it runs on the two public BlockGaze deployments. Every example response in these pages was captured from a live deployment on 16 October 2026, except those that show address tags, which were captured on 17 October 2026, those of the block countdown, an address's swap offers, the staked supply and FSNEX's supply, which were captured on 18 October 2026, and those of the internal transaction lists, network status, an address's token approvals and its events, which were captured on 20 October 2026, and those of the daily staked amount and yield, the search, the verified contracts list, the decoder, block details and transaction details, which were captured on 22 October 2026.
+This repository documents the API as it runs on the two public BlockGaze deployments. Every example response in these pages was captured from a live deployment on 16 October 2026, except those that show address tags, which were captured on 17 October 2026, those of the block countdown, an address's swap offers, the staked supply and FSNEX's supply, which were captured on 18 October 2026, and those of the internal transaction lists, network status, an address's token approvals and its events, which were captured on 20 October 2026, and those of the daily staked amount and yield, the search, the verified contracts list, the decoder, block details, transaction details and the source comparison, which were captured on 22 October 2026.
 
 ## Deployments and base URLs
 
@@ -66,7 +66,7 @@ Use the document to generate a client in your language. The document states ever
 | [Blocks and transactions](docs/blocks-and-transactions.md) | Block list, detail and countdown, transaction list (by block, address or operation) and detail, internal transaction list |
 | [Addresses](docs/addresses.md) | Rich list, address detail, token and NFT holdings, approvals, events, internal transactions, trades, CSV export |
 | [Tokens, NFTs and trades](docs/tokens-and-nfts.md) | Token list, detail, price and holders; token transfers; NFT collections and items; DEX and NFT trades |
-| [Contracts](docs/contracts.md) | Bytecode, opcodes, verified functions, contract reads, verified source, verified contracts, decoding calldata and logs |
+| [Contracts](docs/contracts.md) | Bytecode, opcodes, verified functions, contract reads, verified source, verified contracts, decoding calldata and logs, comparing verified sources |
 | [Fusion](docs/fusion.md) | FSNEX only: Fusion assets, native swaps, staking tickets, USANs, supply, operation statistics |
 | [Etherscan-compatible module](docs/etherscan-compatible.md) | `account`, `block`, `logs` and `contract` modules in Etherscan's request and response format |
 

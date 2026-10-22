@@ -8,6 +8,7 @@
 - [Read a contract function](#read-a-contract-function)
 - [Verified source](#verified-source)
 - [Verified contracts](#verified-contracts)
+- [Compare verified sources](#compare-verified-sources)
 - [Decode calldata](#decode-calldata)
 - [Decode an event log](#decode-an-event-log)
 - [Compiler versions](#compiler-versions)
@@ -320,6 +321,108 @@ Response `200`
   "nextCursor": "1791716552-0x445166c4854836292a5af7e3f165a3b8b4eedf97",
   "previousCursor": null,
   "total": null
+}
+```
+
+## Compare verified sources
+
+`GET /v1/verification/comparison`
+
+Compares the verified sources of two contracts line by line. `maximumLineEdits` is the most removed and added lines a file pair is compared through, 2,000. `left` and `right` each give the contract's `address`, `contractName` and `compilerVersion`. `files` lists every source file of either: the left contract's in the order its input lists them, each beside the right file it pairs with, then the right contract's files that pair with none. Files pair when they have the same path, then when their file name is the only one of its kind on either side, and last when a single file is left on each side.
+
+Each file gives its `leftName` and `rightName` (`null` on the side that lacks it), its line counts `leftLineCount` and `rightLineCount`, its `change` and its `hunks`. `change` is a numeric code: `1` unchanged, `2` changed, `3` changed in more than `maximumLineEdits` removed and added lines, which are not listed, `4` only in the left contract and `5` only in the right. Line endings never count as a change. `hunks` is empty unless `change` is `2`; each hunk's `lines` are a run of changed lines with up to three unchanged lines either side, each line giving its `change` (`1` unchanged, `2` only in the left file, `3` only in the right), its `leftNumber` and `rightNumber` from 1 (`null` on the side that lacks the line) and its `text` without its line ending. Paths, names and line texts carry invisible and direction-changing characters as escapes such as `\u202E`, a tab in line text aside.
+
+| Parameter | Default | Description |
+| --- | --- | --- |
+| `left` | | Required. The verified contract whose source the comparison starts from, a 20-byte address. |
+| `right` | | Required. The verified contract whose source it is compared with, a 20-byte address. |
+
+Returns `400` with the title `Invalid address` when either is not a 20-byte address, and `404` with the title `Not verified` when either has no verified source. Both problems name the parameter they are with in a `parameter` member, `left` or `right`. Both are checked for form before either is looked up, `left` first each time, so only the first that fails is named: a malformed `right` is reported before an unverified `left`.
+
+Two verified contracts of the same name, whose only source files pair as the last file left on each side:
+
+```bash
+curl "https://bnb.blockgaze.com/api/v1/verification/comparison?left=0x5313e938b46fc20f47f8fb998fd08932345a860e&right=0x866c317f6ae76540ad00053b171117d811d542f0"
+```
+
+Response `200`
+
+```json
+{
+  "left": {
+    "address": "0x5313e938b46fc20f47f8fb998fd08932345a860e",
+    "contractName": "MevSandwichExecutor",
+    "compilerVersion": "0.8.34+commit.80d5c536"
+  },
+  "right": {
+    "address": "0x866c317f6ae76540ad00053b171117d811d542f0",
+    "contractName": "MevSandwichExecutor",
+    "compilerVersion": "0.8.34+commit.80d5c536"
+  },
+  "maximumLineEdits": 2000,
+  "files": [
+    {
+      "leftName": "contracts/sandwich_ait3.sol",
+      "rightName": "contracts/sandwich_ait2.sol",
+      "change": 2,
+      "leftLineCount": 129,
+      "rightLineCount": 129,
+      "hunks": [
+        {
+          "lines": [
+            {
+              "change": 1,
+              "leftNumber": 7,
+              "rightNumber": 7,
+              "text": "contract MevSandwichExecutor {"
+            },
+            {
+              "change": 1,
+              "leftNumber": 8,
+              "rightNumber": 8,
+              "text": "    address public immutable owner;"
+            },
+            {
+              "change": 1,
+              "leftNumber": 9,
+              "rightNumber": 9,
+              "text": "    "
+            },
+            {
+              "change": 2,
+              "leftNumber": 10,
+              "rightNumber": null,
+              "text": "    ISwapRouter public constant ROUTER = ISwapRouter(0x7139dD70593b6C08138CF35D739B2D64cF55C770);"
+            },
+            {
+              "change": 3,
+              "leftNumber": null,
+              "rightNumber": 10,
+              "text": "    ISwapRouter public constant ROUTER = ISwapRouter(0xb300000b72DEAEb607a12d5f54773D1C19c7028d);"
+            },
+            {
+              "change": 1,
+              "leftNumber": 11,
+              "rightNumber": 11,
+              "text": ""
+            },
+            {
+              "change": 1,
+              "leftNumber": 12,
+              "rightNumber": 12,
+              "text": "    modifier onlyOwner() {"
+            },
+            {
+              "change": 1,
+              "leftNumber": 13,
+              "rightNumber": 13,
+              "text": "        require(msg.sender == owner, \"Not Owner: Only bot can execute\");"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
 ```
 
