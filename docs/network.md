@@ -589,11 +589,37 @@ Response `200` (trimmed: the array shows 2 of 12; `description` cut from 279 cha
 
 `GET /v1/search`
 
-Works out what a search string refers to and where the explorer shows it. `queryKind` is how the string was read: `BlockNumber`, `Address`, `TransactionHash` (any 32-byte hash) or `Unrecognised`. `matches` lists the indexed records found, each with its path on the explorer, and is empty when nothing indexed matches.
+Works out what a search string refers to and where the explorer shows it. `queryKind` is how the string was read: `BlockNumber`, `Address`, `TransactionHash` (any 32-byte hash) or `Unrecognised`. `matches` lists the indexed records found, each with its `kind` and its `path` on the explorer, and is empty when nothing indexed matches. An address, a 40- or 64-digit hex string or a string of digits alone is never searched for as a name.
+
+A string that is none of those is searched for as a name, in this order:
+
+- `Token` and `NftCollection`: up to 10 fungible tokens and 10 NFT collections whose name or symbol contains the string, ignoring case. A string shorter than three characters matches a whole symbol instead, and one longer than 100 matches nothing. Copies of a name or symbol are common, so each group is ranked: a token with a curated label first, then one with verified source, then an exact name or symbol, then one that starts with the string, then the one the explorer saw first.
+- `Label`: up to 10 labels, curated or, on BNB Smart Chain, a validator's StakeHub name, whose name holds every word of the string, in any order and case; an exact name first, then one that starts with the words.
+- `Name`: a name the chain resolves, such as a `.bnb` name on BNB Smart Chain. Until the release that brought the name search, such a match had the kind `Address`.
+
+On Fusion a number can also match a USAN (`Usan`), and a hash an asset (`Asset`), a swap (`Swap`) or a live ticket (`Ticket`).
+
+Each entry of `matches` carries:
+
+| Field | Description |
+| --- | --- |
+| `address` | The token, collection or labelled address, or the address a name points at; `null` for other kinds. |
+| `name` | The token's or collection's name, the label, or the name searched for; `null` for other kinds and for a token that answered no name. |
+| `symbol` | The token's or collection's symbol; `null` otherwise. |
+| `label` | The curated label of a token or collection, if it has one; `null` otherwise. |
+| `isVerified` | Whether a token's or collection's source is verified; `null` for other kinds. |
+
+Beside `matches`, the response carries:
+
+| Field | Description |
+| --- | --- |
+| `tokensWithSymbol` | For a non-empty `Unrecognised` string, how many fungible tokens have it as their symbol, ignoring case, as a `count` capped at 100,000 (`capped` is then `true`); `null` for an empty string and any other kind. More than one means the symbol is shared, and the address tells them apart. |
+
+Token names and symbols are text their deployers chose: invisible and direction-changing characters in them are sent as escapes such as `\u202E`.
 
 | Parameter | Description |
 | --- | --- |
-| `q` | A block number, an address or a 32-byte hash. |
+| `q` | A block number, an address, a 32-byte hash, the name or symbol of a token or NFT collection, the words of a curated label, or a name or number the chain resolves. |
 
 ```bash
 curl "https://fsnex.net/api/v1/search?q=0x8fdc02dc969a22c02ddffd3d8b547fab3d7702fe"
@@ -608,9 +634,93 @@ Response `200`
   "matches": [
     {
       "kind": "Address",
-      "path": "/address/0x8fdc02dc969a22c02ddffd3d8b547fab3d7702fe"
+      "path": "/address/0x8fdc02dc969a22c02ddffd3d8b547fab3d7702fe",
+      "address": null,
+      "name": null,
+      "symbol": null,
+      "label": null,
+      "isVerified": null
     }
-  ]
+  ],
+  "tokensWithSymbol": null
+}
+```
+
+A token's symbol, which 1,343 tokens on BNB Smart Chain share:
+
+```bash
+curl "https://bnb.blockgaze.com/api/v1/search?q=usdt"
+```
+
+Response `200` (trimmed: `matches` shows the first 2 of 10 tokens and the one collection)
+
+```json
+{
+  "query": "usdt",
+  "queryKind": "Unrecognised",
+  "matches": [
+    {
+      "kind": "Token",
+      "path": "/token/0x55d398326f99059ff775485246999027b3197955",
+      "address": "0x55d398326f99059ff775485246999027b3197955",
+      "name": "Tether USD",
+      "symbol": "USDT",
+      "label": "Tether USD",
+      "isVerified": false
+    },
+    {
+      "kind": "Token",
+      "path": "/token/0xa2dca18d394a3564755aef11822d939e81845b9b",
+      "address": "0xa2dca18d394a3564755aef11822d939e81845b9b",
+      "name": "Tether USD",
+      "symbol": "USDT",
+      "label": null,
+      "isVerified": true
+    },
+    {
+      "kind": "NftCollection",
+      "path": "/token/0xb2acb4f32dcb01ff77e9e93eb9195ded78c97c64",
+      "address": "0xb2acb4f32dcb01ff77e9e93eb9195ded78c97c64",
+      "name": "kNFT: Locked kUSDT",
+      "symbol": "kNFT-USDT",
+      "label": null,
+      "isVerified": false
+    }
+  ],
+  "tokensWithSymbol": {
+    "count": 1343,
+    "capped": false
+  }
+}
+```
+
+The words of a curated label:
+
+```bash
+curl "https://bnb.blockgaze.com/api/v1/search?q=pancakeswap%20router"
+```
+
+Response `200`
+
+```json
+{
+  "query": "pancakeswap router",
+  "queryKind": "Unrecognised",
+  "matches": [
+    {
+      "kind": "Label",
+      "path": "/address/0x10ed43c718714eb63d5aa57b78b54704e256024e",
+      "address": "0x10ed43c718714eb63d5aa57b78b54704e256024e",
+      "name": "PancakeSwap: Router v2",
+      "symbol": null,
+      "label": null,
+      "isVerified": null
+    }
+  ],
+  "tokensWithSymbol": {
+    "count": 0,
+    "capped": false
+  }
 }
 ```
 
