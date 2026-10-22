@@ -7,6 +7,7 @@
 - [Verified functions](#verified-functions)
 - [Read a contract function](#read-a-contract-function)
 - [Verified source](#verified-source)
+- [Verified contracts](#verified-contracts)
 - [Compiler versions](#compiler-versions)
 
 Verified source comes from contracts verified on the explorer and, on BNB Smart Chain, from verifications imported from Sourcify. The same source is available in Etherscan's format through [`module=contract`](etherscan-compatible.md#contract-abi-and-source).
@@ -274,6 +275,49 @@ Response `200` (trimmed: `sources.content` cut from 9610 characters; `abi` cut f
   "constructorArguments": null,
   "constructorArgumentsAbsence": 2,
   "decodedConstructorArguments": null
+}
+```
+
+## Verified contracts
+
+`GET /v1/verification/contracts`
+
+Every verified contract, most recently verified first: its `address`, `contractName`, `language`, `compilerVersion`, `match` and `verifiedAt`, the codes as in [Verified source](#verified-source): `language` 0 for Solidity and 1 for Vyper, `match` 1 for a partial match and 2 for a full one. `contractName` is the name the submitter's source gave it, with invisible and direction-changing characters sent as escapes such as `\u202E`.
+
+| Parameter | Default | Description |
+| --- | --- | --- |
+| `pageSize` | `25` | Contracts per page, at most 100. |
+| `cursor`, `last`, `count`, `page` | | See [pagination](../README.md#pagination). This list is not in block order, so it does not accept `from`, and `page` reaches only the first 100,000 contracts. |
+
+```bash
+curl "https://fsnex.net/api/v1/verification/contracts?pageSize=2"
+```
+
+Response `200`
+
+```json
+{
+  "contracts": [
+    {
+      "address": "0xa6b71e26c5e0845f74c812102ca7114b6a896ab2",
+      "contractName": "GnosisSafeProxyFactory",
+      "language": 0,
+      "compilerVersion": "0.7.6+commit.7338295f",
+      "match": 2,
+      "verifiedAt": 1791725741
+    },
+    {
+      "address": "0x445166c4854836292a5af7e3f165a3b8b4eedf97",
+      "contractName": "BtcSwapAssetV2",
+      "language": 0,
+      "compilerVersion": "0.5.4+commit.9549d8ff",
+      "match": 1,
+      "verifiedAt": 1791716552
+    }
+  ],
+  "nextCursor": "1791716552-0x445166c4854836292a5af7e3f165a3b8b4eedf97",
+  "previousCursor": null,
+  "total": null
 }
 ```
 
