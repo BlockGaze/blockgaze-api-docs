@@ -2,7 +2,7 @@
 
 BlockGaze indexes EVM chains into a database and serves the indexed records through the explorer and through a read-only HTTP API. The API returns the same blocks, transactions, addresses, tokens, trades and statistics that the explorer pages show, as JSON.
 
-This repository documents the API as it runs on the two public BlockGaze deployments. Every example response in these pages was captured from a live deployment on 16 October 2026, except those that show address tags, which were captured on 17 October 2026, those of the block countdown, an address's swap offers, transaction details, the staked supply and FSNEX's supply, which were captured on 18 October 2026, and those of the internal transaction lists, network status, an address's token approvals and its events, which were captured on 20 October 2026.
+This repository documents the API as it runs on the two public BlockGaze deployments. Every example response in these pages was captured from a live deployment on 16 October 2026, except those that show address tags, which were captured on 17 October 2026, those of the block countdown, an address's swap offers, transaction details, the staked supply and FSNEX's supply, which were captured on 18 October 2026, and those of the internal transaction lists, network status, an address's token approvals and its events, which were captured on 20 October 2026, and those of the daily staked amount and yield, which were captured on 22 October 2026.
 
 ## Deployments and base URLs
 
@@ -25,7 +25,7 @@ Some endpoints exist only on the chain they describe. `GET /v1/network` lists wh
 | Feature | FSNEX | BNB Smart Chain | Endpoints |
 | --- | --- | --- | --- |
 | Fusion assets, swaps, tickets, USANs, supply | Yes | No | [Fusion](docs/fusion.md) |
-| Stake distribution and staked history | Yes | Yes | [`/v1/stake-distribution`](docs/network.md#stake-distribution), [`/v1/statistics/staked`](docs/network.md#daily-staked-amount) |
+| Stake distribution and staked history | Yes | Yes | [`/v1/stake-distribution`](docs/network.md#stake-distribution), [`/v1/statistics/staked`](docs/network.md#daily-staked-amount-and-yield) |
 | Staked supply | Yes | Yes | [`/v1/staked-supply`](docs/network.md#staked-supply) |
 | Market data (native currency price) | No | Yes | [`/v1/market`](docs/network.md#market-data) |
 | StakeHub staking total | No | Yes | [`/v1/staking`](docs/network.md#staking-total) |

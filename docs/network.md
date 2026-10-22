@@ -7,7 +7,7 @@
 - [Sync status](#sync-status)
 - [Gas](#gas)
 - [Daily statistics](#daily-statistics)
-- [Daily staked amount](#daily-staked-amount)
+- [Daily staked amount and yield](#daily-staked-amount-and-yield)
 - [Block producers](#block-producers)
 - [Block producer history](#block-producer-history)
 - [Staked supply](#staked-supply)
@@ -319,11 +319,13 @@ Response `200`
 ]
 ```
 
-## Daily staked amount
+## Daily staked amount and yield
 
 `GET /v1/statistics/staked`
 
 The native currency staked at the end of each UTC day, in wei. Served where `features.stakedHistory` is `true`, which is both deployments.
+
+Each day also carries `rewards`, the block rewards its blocks paid, issuance and gas and native fees together, in wei (issuance is none on BNB Smart Chain), and `annualYield`, those rewards over the day's closing stake times 365, as a fraction: `0.05` is 5%. It is a gross yield, before any commission, burn or system-reward share the chain takes (on BNB Smart Chain, validators' commission and the part of each block's fees that is burned or sent to the system reward contract), so a staker earns less. `annualYield` is `null` for the newest day and the first day the deployment indexed, whose blocks it holds only in part, for a day whose stake or rewards are unknown, and past a millionfold. `rewards` is a part day's on the newest day, which `isPartial` marks, and `null` on the first indexed day, whose stake is whole but whose blocks are not, and for a day the deployment holds no statistics of.
 
 | Parameter | Default | Description |
 | --- | --- | --- |
@@ -338,14 +340,18 @@ Response `200`
 ```json
 [
   {
-    "day": "2026-10-15",
+    "day": "2026-10-21",
     "isPartial": false,
-    "staked": "24148045016268836234634939"
+    "staked": "24192830433408873213685977",
+    "rewards": "496912957050617256450",
+    "annualYield": 0.007496
   },
   {
-    "day": "2026-10-16",
+    "day": "2026-10-22",
     "isPartial": true,
-    "staked": "24148425195650580952256259"
+    "staked": "24185683647157966308380240",
+    "rewards": "390403110497644658813",
+    "annualYield": null
   }
 ]
 ```
