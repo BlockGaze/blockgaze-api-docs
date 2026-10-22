@@ -8,6 +8,7 @@
 - [Gas](#gas)
 - [Daily statistics](#daily-statistics)
 - [Daily staked amount and yield](#daily-staked-amount-and-yield)
+- [Gas guzzlers](#gas-guzzlers)
 - [Block producers](#block-producers)
 - [Block producer history](#block-producer-history)
 - [Staked supply](#staked-supply)
@@ -354,6 +355,64 @@ Response `200`
     "annualYield": null
   }
 ]
+```
+
+## Gas guzzlers
+
+`GET /v1/statistics/gas-guzzlers`
+
+The addresses whose top-level transactions used the most gas on a finished UTC day, as their receipts report it, at most 100, most first. Gas that a contract's calls to other contracts used counts for the address the transaction was sent to. A day is ranked once the block after its last is indexed, and only when its first block is indexed too, so the first, partial day of an index is never ranked.
+
+The answer gives the ranked `day`, the nearest earlier and later ranked days as `previousDay` and `nextDay` (`null` when there is none), `dayGasUsed`, the gas every transaction of the day used (`null` until the daily statistics have passed the day), and `addresses`, each with its `rank` from 1, `address`, `label`, `tags`, `gasUsed`, `transactionCount` and `gasSharePercent`, its share of `dayGasUsed` (`null` when that is). When no day has been ranked yet, `day` is `null` and `addresses` is empty.
+
+| Parameter | Default | Description |
+| --- | --- | --- |
+| `day` | | A finished UTC day as `yyyy-MM-dd`; the newest ranked day when left out. |
+
+Returns `400` with the title `Invalid day` when `day` is not a `yyyy-MM-dd` date, and `404` with the title `Day not ranked` when that day has no ranking.
+
+```bash
+curl "https://fsnex.net/api/v1/statistics/gas-guzzlers?day=2021-08-15"
+```
+
+Response `200` (trimmed: `addresses` shows 3 of 100)
+
+```json
+{
+  "day": "2021-08-15",
+  "previousDay": "2021-08-14",
+  "nextDay": "2021-08-16",
+  "dayGasUsed": 766996092,
+  "addresses": [
+    {
+      "rank": 1,
+      "address": "0xed0294dbd2a0e52a09c3f38a09f6e03de2c44fcf",
+      "label": null,
+      "tags": [],
+      "gasUsed": 229466300,
+      "transactionCount": 4420,
+      "gasSharePercent": 29.917531835351255
+    },
+    {
+      "rank": 2,
+      "address": "0xcf747c3e2c2474098890fbd14d0250a2f36961ac",
+      "label": "Chainge: Router",
+      "tags": [],
+      "gasUsed": 195762743,
+      "transactionCount": 1075,
+      "gasSharePercent": 25.52330383972804
+    },
+    {
+      "rank": 3,
+      "address": "0xffffffffffffffffffffffffffffffffffffffff",
+      "label": "Fusion Native Calls",
+      "tags": [],
+      "gasUsed": 147750444,
+      "transactionCount": 6714,
+      "gasSharePercent": 19.263519793787946
+    }
+  ]
+}
 ```
 
 ## Block producers
