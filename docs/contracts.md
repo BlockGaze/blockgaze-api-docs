@@ -8,6 +8,8 @@
 - [Read a contract function](#read-a-contract-function)
 - [Verified source](#verified-source)
 - [Verified contracts](#verified-contracts)
+- [Decode calldata](#decode-calldata)
+- [Decode an event log](#decode-an-event-log)
 - [Compiler versions](#compiler-versions)
 
 Verified source comes from contracts verified on the explorer and, on BNB Smart Chain, from verifications imported from Sourcify. The same source is available in Etherscan's format through [`module=contract`](etherscan-compatible.md#contract-abi-and-source).
@@ -318,6 +320,138 @@ Response `200`
   "nextCursor": "1791716552-0x445166c4854836292a5af7e3f165a3b8b4eedf97",
   "previousCursor": null,
   "total": null
+}
+```
+
+## Decode calldata
+
+`POST /v1/decoder/calldata`
+
+Decodes a call's input data: against the verified ABI of `address` when it is given, then, for a verified proxy, the verified ABI of the implementation it runs now, then the explorer's signature catalog. The answer gives the `selector`, the `method` it names, the `source` of that declaration (`VerifiedAbi`, `ImplementationAbi` or `Catalog`) and the decoded `arguments`, each with its `name`, `type` and `value` or, for a tuple or array, its `items`. `method` and `source` are `null` when nothing declares the selector; `arguments` is `null` then too, and when the data does not fit the declaration.
+
+| Body field | Description |
+| --- | --- |
+| `input` | The input data as hex, its `0x` optional: the four-byte selector and at most 128 KiB in all. |
+| `address` | Optional. The contract the call was sent to. |
+
+Returns `400` with the title `Invalid input` or `Invalid address` when either is malformed, and `413` for a body past 512 KiB.
+
+The input of a PancakeSwap swap, whose `path` argument is an array:
+
+```bash
+curl -X POST "https://bnb.blockgaze.com/api/v1/decoder/calldata" \
+  -H "Content-Type: application/json" \
+  -d '{"input":"0x18cbafe5000000000000000000000000000000000000000000055ed64b7e1e73284c5282000000000000000000000000000000000000000000000000000000e8d4a5100000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000095ed2e56cd3d45d2e3bfd4f27d58f352f9fd158e000000000000000000000000000000000000000000000000000000006ada58900000000000000000000000000000000000000000000000000000000000000002000000000000000000000000d94a72950ead1b78331d91924a309ea322937777000000000000000000000000bb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c","address":"0x10ed43c718714eb63d5aa57b78b54704e256024e"}'
+```
+
+Response `200`
+
+```json
+{
+  "selector": "0x18cbafe5",
+  "method": "swapExactTokensForETH(uint256,uint256,address[],address,uint256)",
+  "source": "Catalog",
+  "arguments": [
+    {
+      "name": "amountIn",
+      "type": "uint256",
+      "value": "6492484590513546223964802"
+    },
+    {
+      "name": "amountOutMin",
+      "type": "uint256",
+      "value": "1000000000000"
+    },
+    {
+      "name": "path",
+      "type": "address[]",
+      "items": [
+        {
+          "name": "",
+          "type": "address",
+          "value": "0xd94a72950ead1b78331d91924a309ea322937777"
+        },
+        {
+          "name": "",
+          "type": "address",
+          "value": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+        }
+      ]
+    },
+    {
+      "name": "to",
+      "type": "address",
+      "value": "0x95ed2e56cd3d45d2e3bfd4f27d58f352f9fd158e"
+    },
+    {
+      "name": "deadline",
+      "type": "uint256",
+      "value": "1792694416"
+    }
+  ]
+}
+```
+
+## Decode an event log
+
+`POST /v1/decoder/log`
+
+Decodes a log the same way, its event named by its first topic and the number of topics after it, so that ERC-20's and ERC-721's `Transfer`, which share a first topic, are told apart. The answer gives the `eventSignature`, its `source` and the decoded `arguments`, with the same `null` rules as for calldata.
+
+| Body field | Description |
+| --- | --- |
+| `topics` | The log's one to four topics, each 32 bytes of hex. |
+| `data` | Optional. The log's data as hex, at most 128 KiB; empty or left out when every argument is indexed. |
+| `address` | Optional. The contract that emitted the log. |
+
+Returns `400` with the title `Invalid topics`, `Invalid data` or `Invalid address` when one is malformed, and `413` for a body past 512 KiB.
+
+The `Swap` log the same transaction's pool emitted:
+
+```bash
+curl -X POST "https://bnb.blockgaze.com/api/v1/decoder/log" \
+  -H "Content-Type: application/json" \
+  -d '{"topics":["0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822","0x00000000000000000000000010ed43c718714eb63d5aa57b78b54704e256024e","0x00000000000000000000000010ed43c718714eb63d5aa57b78b54704e256024e"],"data":"0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000055ed64b7e1e73284c528200000000000000000000000000000000000000000000000005492fc6625b5c2c0000000000000000000000000000000000000000000000000000000000000000","address":"0x382d2632594024a6e958020bd55142416d0711fe"}'
+```
+
+Response `200`
+
+```json
+{
+  "eventSignature": "Swap(address,uint256,uint256,uint256,uint256,address)",
+  "source": "Catalog",
+  "arguments": [
+    {
+      "name": "sender",
+      "type": "address",
+      "value": "0x10ed43c718714eb63d5aa57b78b54704e256024e"
+    },
+    {
+      "name": "amount0In",
+      "type": "uint256",
+      "value": "0"
+    },
+    {
+      "name": "amount1In",
+      "type": "uint256",
+      "value": "6492484590513546223964802"
+    },
+    {
+      "name": "amount0Out",
+      "type": "uint256",
+      "value": "380888172589702188"
+    },
+    {
+      "name": "amount1Out",
+      "type": "uint256",
+      "value": "0"
+    },
+    {
+      "name": "to",
+      "type": "address",
+      "value": "0x10ed43c718714eb63d5aa57b78b54704e256024e"
+    }
+  ]
 }
 ```
 
