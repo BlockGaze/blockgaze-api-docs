@@ -409,7 +409,7 @@ Response `200`
 
 The call frames inside transactions that the address sent or received, newest first. `frame.movedValue` says whether the frame actually moved value: it is `false` when the frame or a frame above it failed, or the transaction failed. `direction` is the address's side of the frame. `frame.fromLabel`, `frame.fromTags`, `frame.toLabel` and `frame.toTags` give each side's label and tags, the tags [Get an address](#get-an-address) lists.
 
-Only blocks from `coveredFrom` to `coveredThrough` have been traced. On FSNEX the trace is still being extended through the chain's history; on BNB Smart Chain internal transactions are not traced, and both fields are `null`.
+Only blocks from `coveredFrom` to `coveredThrough` have been traced. On FSNEX the trace covers the whole chain, from genesis to block 15,130,080; on BNB Smart Chain internal transactions are not traced, and both fields are `null`.
 
 A page of `transfers` is found among a bounded number of the address's frames, so it can hold fewer items than asked for, or none, and still give a cursor onward. So `fromBlock` and `toBlock` give the blocks the page covers in place of record numbers, both `null` only when the page read no frame; the list has no `count` and no jump. A `previousCursor` that reaches the newest frames returns the first page, whose `previousCursor` is `null`.
 

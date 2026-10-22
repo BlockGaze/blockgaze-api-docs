@@ -68,7 +68,7 @@ Response `200`
 
 `GET /v1/blocks/{numberOrHash}`
 
-One block by number or by hash, with its header fields, fees, issuance and reward. `minerLabel` and `minerTags` give the producer's label and tags, as in [List blocks](#list-blocks). `annotations` carries chain-specific notes recorded with the block, such as the Fusion ticket snapshot below.
+One block by number or by hash, with its header fields, fees, issuance and reward. `blobGas` gives the blob gas the block's blob transactions `used`, the header's `excess` blob gas and the `blobCount` they make (blob gas used over 131,072), and is `null` for a block whose header does not report both, as on FSNEX and on BNB Smart Chain before its Cancun fork. `minerLabel` and `minerTags` give the producer's label and tags, as in [List blocks](#list-blocks). `annotations` carries chain-specific notes recorded with the block, such as the Fusion ticket snapshot below.
 
 | Parameter | Description |
 | --- | --- |
@@ -87,7 +87,7 @@ Response `200` (trimmed: `extraData` cut from 272 characters)
   "annotations": [
     {
       "title": "Fusion ticket staking",
-      "description": "Historical ticket snapshot recorded in this block. This count describes this block alone, not the newest block the ticket index has reached.",
+      "description": "The ticket snapshot recorded in this block's header. Its count is for this block, not for the newest block the ticket index has reached.",
       "fields": [
         {
           "label": "Tickets at this block",
@@ -124,6 +124,7 @@ Response `200` (trimmed: `extraData` cut from 272 characters)
   "baseFeePerGas": "1000000000",
   "difficulty": "499",
   "totalDifficulty": "63370514513",
+  "blobGas": null,
   "extraData": "0xd883050000846566736e88676f312e31392e33856c696e757800000000000000…",
   "size": 779,
   "nonce": "0x0000000000000000",
@@ -135,6 +136,57 @@ Response `200` (trimmed: `extraData` cut from 272 characters)
   "transactionCount": 1
 }
 ```
+A BNB Smart Chain block that carries one blob:
+
+```bash
+curl "https://bnb.blockgaze.com/api/v1/blocks/129169995"
+```
+
+Response `200` (trimmed: `extraData` cut from 562 characters)
+
+```json
+{
+  "annotations": [],
+  "totalFees": "825027494736258",
+  "gasFees": "825027494736258",
+  "issuance": "0",
+  "blockReward": "825027494736258",
+  "averageGasPrice": "69689916",
+  "number": 129169995,
+  "hash": "0x769dcd587ea291e39ceecb8745604269c3c139c441f1a7cc2b127b77ff7b61a8",
+  "parentHash": "0xd020072ecabad1a63eefbf589cdbde9ad642de09b1482b2d04e5d2685cee6e15",
+  "timestamp": 1792690124,
+  "miner": "0x38944092685a336cb6b9ea58836436709a2adc89",
+  "minerLabel": "Shannon",
+  "minerTags": [
+    {
+      "title": "Validator",
+      "colour": "Accent",
+      "description": "Produces blocks and sends each block's system transactions."
+    }
+  ],
+  "gasLimit": 70000000,
+  "gasUsed": 11838549,
+  "baseFeePerGas": "0",
+  "difficulty": "2",
+  "totalDifficulty": "257754238",
+  "blobGas": {
+    "used": 131072,
+    "excess": 0,
+    "blobCount": 1
+  },
+  "extraData": "0xda8301070888336434656363636288676f312e32372e31836c696e00d38cc282…",
+  "size": 51261,
+  "nonce": "0x0000000000000000",
+  "mixHash": "0x00000000000000000000000000000000000000000000000000000000000002bc",
+  "sha3Uncles": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
+  "stateRoot": "0xe1a6b4eb5b71f4609bec1cf3e6dff79e302cf5ed666c5ebb0ccd4fbe037c35b7",
+  "transactionsRoot": "0xc16b986b238bc47b5994fc28849a3de75de5b03d72d12e1c8693859670a83313",
+  "receiptsRoot": "0x6051ff17772a2193f85b6f72aaeb98c723f4ddc8420615b6ff0d2f9ff443c1d6",
+  "transactionCount": 84
+}
+```
+
 
 ## Count down to a block
 
@@ -561,6 +613,7 @@ One transaction with everything the explorer shows for it:
 - the transaction's own fields: sender, recipient, value, gas, fee, nonce, type, input and the decoded method where the contract is verified, with the sender's and recipient's labels and tags in `fromLabel`, `fromTags`, `toLabel` and `toTags`, and those of the contract a contract creation made in `createdContractLabel` and `createdContractTags`
 - `inputText`: the input read as UTF-8 text, for a message sent in it, or `null`. It is sent only when nothing decodes the input as a call (`method` is `null` and so is `inputEncoding`), the transaction creates no contract and its bytes are valid UTF-8, contain at least one visible character, and contain no control character other than a tab, a carriage return or a line feed, so a call with arguments, whose ABI encoding almost always holds zero bytes, is practically never read as text, though an unknown selector sent alone occasionally is. Every line break is sent as a line feed, tabs are kept, and any other invisible character, such as a zero-width space or a right-to-left override, is written as a `\uXXXX` escape
 - `feeBreakdown`, which separates the gas fee from any chain-specific fee
+- `blobs`: for a blob transaction (type 3), its blobs' `versionedHashes`, its `maxFeePerBlobGas` in wei, and from its receipt the `blobGasUsed`, the `blobGasPrice` in wei and the `blobFee` in wei, their product, paid beside `fee` rather than in it; the receipt's three are `null` when the receipt is not indexed yet or did not report them, and `blobs` is `null` for every other transaction. The blobs themselves are not kept.
 - `tokenTransfers`: the token and NFT transfers the transaction made, each with `fromLabel`, `fromTags`, `toLabel` and `toTags` for its sender and recipient
 - `logs`: the event logs, decoded into `eventSignature` and `arguments` where the event is known, each with its emitter's `addressLabel` and `addressTags`, the tags [Get an address](addresses.md#get-an-address) lists
 - `actions`: what the transaction did in plain terms, such as the swaps below, each with the tokens given and received, and `accountLabel`, `accountTags`, `recipientLabel` and `recipientTags` for the account it names and its recipient
@@ -680,10 +733,11 @@ Response `200` (trimmed: `actions` shows 2 of 3; `input` cut from 320 characters
     "additionalFeeLabel": "Native operation fee",
     "totalFee": "3328935851064514"
   },
+  "blobs": null,
   "internalTransactions": {
-    "isTraced": false,
+    "isTraced": true,
     "coveredFrom": 0,
-    "coveredThrough": 8858098,
+    "coveredThrough": 15130080,
     "error": null,
     "revertReason": null,
     "frames": []
@@ -828,10 +882,10 @@ Response `200` (trimmed: `actions` shows 2 of 3; `input` cut from 320 characters
 }
 ```
 
-A plain transfer on BNB Smart Chain:
+A blob transaction on BNB Smart Chain, which carries one blob:
 
 ```bash
-curl "https://bnb.blockgaze.com/api/v1/transactions/0xc714b944c97eaccce94814efb588f11cd6f3a9279e319cca0d1bb45d98df4c4e"
+curl "https://bnb.blockgaze.com/api/v1/transactions/0xb79c7d563ec8e2ac55acc4709540b93684215178ca1056f69d32abfd2698b353"
 ```
 
 Response `200`
@@ -844,6 +898,15 @@ Response `200`
   "inputText": null,
   "methodSource": null,
   "feeBreakdown": null,
+  "blobs": {
+    "versionedHashes": [
+      "0x01b3b2b7c6ff1a4cabd7e536301ea1ccef5c763851d5191e1bd7a98397e4ad4a"
+    ],
+    "maxFeePerBlobGas": "2",
+    "blobGasUsed": 131072,
+    "blobGasPrice": "1",
+    "blobFee": "131072"
+  },
   "internalTransactions": null,
   "fromLabel": null,
   "fromTags": [],
@@ -852,27 +915,27 @@ Response `200`
   "createdContractLabel": null,
   "createdContractTags": [],
   "kind": "Transfer",
-  "fee": "0",
-  "blockNumber": 128033625,
-  "transactionIndex": 63,
-  "hash": "0xc714b944c97eaccce94814efb588f11cd6f3a9279e319cca0d1bb45d98df4c4e",
-  "blockHash": "0x78494a76d0f1d82bab73f374e83960008397d1e2fbf60eb4b71d2b59ca56e1b9",
-  "timestamp": 1792178554,
-  "from": "0xc7d4187cbda07f4b5be04418b9723b5faf65db5c",
-  "to": "0x5532cdb3c0c4278f9848fc4560b495b70ba67455",
+  "fee": "4200000000000",
+  "blockNumber": 129169995,
+  "transactionIndex": 32,
+  "hash": "0xb79c7d563ec8e2ac55acc4709540b93684215178ca1056f69d32abfd2698b353",
+  "blockHash": "0x769dcd587ea291e39ceecb8745604269c3c139c441f1a7cc2b127b77ff7b61a8",
+  "timestamp": 1792690124,
+  "from": "0xef8783382ef80ec23b66c43575a6103deca909c3",
+  "to": "0xff00000000000000000000000000000000000204",
   "createdContract": null,
   "value": "0",
   "gas": 21000,
   "gasUsed": 21000,
-  "gasPrice": "0",
-  "effectiveGasPrice": "0",
-  "maxFeePerGas": null,
-  "maxPriorityFeePerGas": null,
-  "nonce": 405691,
+  "gasPrice": null,
+  "effectiveGasPrice": "200000000",
+  "maxFeePerGas": "200000000",
+  "maxPriorityFeePerGas": "200000000",
+  "nonce": 16570384,
   "input": "0x",
   "method": null,
   "methodArguments": null,
-  "type": 0,
+  "type": 3,
   "chainId": 56,
   "succeeded": true,
   "logCount": 0,
@@ -971,10 +1034,11 @@ Response `200` (trimmed: `logs.data` cut from 326 characters)
     "additionalFeeLabel": "Native operation fee",
     "totalFee": "25832000000000"
   },
+  "blobs": null,
   "internalTransactions": {
     "isTraced": true,
     "coveredFrom": 0,
-    "coveredThrough": 9093778,
+    "coveredThrough": 15130080,
     "error": null,
     "revertReason": null,
     "frames": []

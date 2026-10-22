@@ -2,7 +2,7 @@
 
 BlockGaze indexes EVM chains into a database and serves the indexed records through the explorer and through a read-only HTTP API. The API returns the same blocks, transactions, addresses, tokens, trades and statistics that the explorer pages show, as JSON.
 
-This repository documents the API as it runs on the two public BlockGaze deployments. Every example response in these pages was captured from a live deployment on 16 October 2026, except those that show address tags, which were captured on 17 October 2026, those of the block countdown, an address's swap offers, transaction details, the staked supply and FSNEX's supply, which were captured on 18 October 2026, and those of the internal transaction lists, network status, an address's token approvals and its events, which were captured on 20 October 2026, and those of the daily staked amount and yield, the search, the verified contracts list and the decoder, which were captured on 22 October 2026.
+This repository documents the API as it runs on the two public BlockGaze deployments. Every example response in these pages was captured from a live deployment on 16 October 2026, except those that show address tags, which were captured on 17 October 2026, those of the block countdown, an address's swap offers, the staked supply and FSNEX's supply, which were captured on 18 October 2026, and those of the internal transaction lists, network status, an address's token approvals and its events, which were captured on 20 October 2026, and those of the daily staked amount and yield, the search, the verified contracts list, the decoder, block details and transaction details, which were captured on 22 October 2026.
 
 ## Deployments and base URLs
 
@@ -15,7 +15,7 @@ Both deployments run the same API. The JSON endpoints live under `/v1` on the ba
 
 ### Retention differs per deployment
 
-- **FSNEX is fully indexed.** The most complete Fusion chain data available ends at block 15,130,080, and every block from genesis to that block is indexed. `GET /v1/network` reports `"historyState": "HaltedComplete"`. Internal transactions are traced separately, and that trace is still being extended through the chain's history. Each internal-transaction response states the block range it covers in `coveredFrom` and `coveredThrough`, and [`GET /v1/network`](docs/network.md#network-status) gives it as `tracedFromBlock` and `tracedToBlock`.
+- **FSNEX is fully indexed.** The most complete Fusion chain data available ends at block 15,130,080, and every block from genesis to that block is indexed. `GET /v1/network` reports `"historyState": "HaltedComplete"`. Internal transactions are traced separately, and that trace covers the whole chain, from genesis to block 15,130,080. Each internal-transaction response states the block range it covers in `coveredFrom` and `coveredThrough`, and [`GET /v1/network`](docs/network.md#network-status) gives it as `tracedFromBlock` and `tracedToBlock`.
 - **BNB Smart Chain keeps a rolling window.** The deployment keeps the most recent 400,000 blocks, about two days at the chain's current block time. Older blocks, transactions and transfers are removed as new blocks arrive, and lookups for them return `404`. Read `indexedFromBlock` from [`GET /v1/network`](docs/network.md#network-status) to see where the window starts. Daily statistics are kept for longer than the raw blocks, from `statisticsFromTimestamp`. Internal transactions are not traced on this deployment.
 
 ### Chain-specific endpoints
