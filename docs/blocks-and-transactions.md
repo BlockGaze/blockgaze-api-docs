@@ -13,7 +13,7 @@
 
 `GET /v1/blocks`
 
-Blocks, newest first, with producer, gas, transaction count, fees and reward. `minerLabel` and `minerTags` give the producer's label and tags. Tags are those [Get an address](addresses.md#get-an-address) lists, in the same order and shape; an untagged address has an empty list.
+Blocks, newest first, with producer, gas, transaction count, fees and reward. `totalFees` is what the block's transactions paid in wei, blob transactions' blob fees included. `minerLabel` and `minerTags` give the producer's label and tags. Tags are those [Get an address](addresses.md#get-an-address) lists, in the same order and shape; an untagged address has an empty list.
 
 | Parameter | Default | Description |
 | --- | --- | --- |
@@ -68,7 +68,7 @@ Response `200`
 
 `GET /v1/blocks/{numberOrHash}`
 
-One block by number or by hash, with its header fields, fees, issuance and reward. `blobGas` gives the blob gas the block's blob transactions `used`, the header's `excess` blob gas and the `blobCount` they make (blob gas used over 131,072), and is `null` for a block whose header does not report both, as on FSNEX and on BNB Smart Chain before its Cancun fork. `minerLabel` and `minerTags` give the producer's label and tags, as in [List blocks](#list-blocks). `annotations` carries chain-specific notes recorded with the block, such as the Fusion ticket snapshot below.
+One block by number or by hash, with its header fields, fees, issuance and reward. `totalFees` is what its transactions paid in wei, blob transactions' blob fees included, and `gasFees` what they paid for gas alone, leaving out blob fees and any chain-specific fee. `blobGas` gives the blob gas the block's blob transactions `used`, the header's `excess` blob gas and the `blobCount` they make (blob gas used over 131,072), and is `null` for a block whose header does not report both, as on FSNEX and on BNB Smart Chain before its Cancun fork. `minerLabel` and `minerTags` give the producer's label and tags, as in [List blocks](#list-blocks). `annotations` carries chain-specific notes recorded with the block, such as the Fusion ticket snapshot below.
 
 | Parameter | Description |
 | --- | --- |
@@ -147,10 +147,10 @@ Response `200` (trimmed: `extraData` cut from 562 characters)
 ```json
 {
   "annotations": [],
-  "totalFees": "825027494736258",
+  "totalFees": "825027494867330",
   "gasFees": "825027494736258",
   "issuance": "0",
-  "blockReward": "825027494736258",
+  "blockReward": "825027494867330",
   "averageGasPrice": "69689916",
   "number": 129169995,
   "hash": "0x769dcd587ea291e39ceecb8745604269c3c139c441f1a7cc2b127b77ff7b61a8",
