@@ -21,7 +21,7 @@ Every endpoint on this page returns `400` when `address` is not a 20-byte addres
 
 `GET /v1/contracts/{address}/code`
 
-The contract's deployed bytecode as the indexer read it, with its hash, size and the block it was read at, and `creationInput`, the input of the transaction that created it. `sharing` lists other addresses with identical code, and `delegators` lists EIP-7702 accounts that delegate to this contract, each with a capped count.
+The contract's deployed bytecode as the indexer read it, with its hash, size and the block it was read at, and `creationInput`, the input of the transaction that created it or, for a contract another contract created, the init code of the newest frame that created it and was not undone, on a deployment that traces internal transactions. It is `null` for a system contract, for a contract created outside the indexed blocks or, when another contract created it, outside the traced ones, and for one another contract created while that deployment is still indexing creation frames. `sharing` lists other addresses with identical code, and `delegators` lists EIP-7702 accounts that delegate to this contract, each with a capped count.
 
 Returns `404` when no code reading of the address is stored.
 
@@ -44,6 +44,42 @@ Response `200` (trimmed: `code` cut from 3966 characters; `creationInput` cut fr
       "capped": false
     },
     "addresses": []
+  },
+  "delegators": {
+    "total": {
+      "count": 0,
+      "capped": false
+    },
+    "addresses": []
+  }
+}
+```
+
+A contract another contract created, on the Fusion deployment, which traces internal transactions: its `creationInput` is the init code of the frame that created it.
+
+```bash
+curl "https://fsnex.net/api/v1/contracts/0xcb822fe8a5f73bcce637cd9e45f5a0c69828379f/code"
+```
+
+Response `200` (trimmed: `code` cut from 21150 characters; `creationInput` cut from 21838 characters; `sharing.addresses` shows 3 of 25)
+
+```json
+{
+  "code": "0x608060405234801561001057600080fd5b50600436106101da5760003560e01c…",
+  "codeHash": "0x06ceed30d0efd9f150d3eee0cf047ffacfc79f4de7cc0d3b9d0d0a571a7ff8b8",
+  "sizeBytes": 10574,
+  "asOfBlock": 15130080,
+  "creationInput": "0x60806040526001600c5534801561001557600080fd5b50604051469080605261…",
+  "sharing": {
+    "total": {
+      "count": 799,
+      "capped": false
+    },
+    "addresses": [
+      "0x0046596ab3f4a6906a239926a791612f2513d734",
+      "0x008e4d537a30bd90386a3fd45c4058514bdbe6fb",
+      "0x00b200d4578c00d3c7b41c036da8895d29304547"
+    ]
   },
   "delegators": {
     "total": {
