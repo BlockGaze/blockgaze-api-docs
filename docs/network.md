@@ -435,43 +435,43 @@ Response `200` (trimmed: `producers` shows 2 of 45)
 {
   "days": 1,
   "endsToday": true,
-  "fromBlock": 128070605,
-  "toBlock": 128209081,
-  "blockCount": 138477,
+  "fromBlock": 129414102,
+  "toBlock": 129445619,
+  "blockCount": 31518,
   "producers": [
     {
-      "producer": "0xb4647b856cb9c3856d559c885bed8b43e0846a47",
-      "label": "CertiK",
+      "producer": "0x5009317fd4f6f8feea9dae41e5f0a4737bb7a7d5",
+      "label": "NodeReal",
       "tags": [
         {
           "title": "Validator",
           "colour": "Accent",
-          "description": "A validator's consensus address: it produces blocks and sends each block's system transactions."
+          "description": "Produces blocks and sends each block's system transactions."
         }
       ],
-      "blockCount": 6112,
-      "sharePercent": 4.413729355777494,
-      "totalFees": "18250999103627067904",
+      "blockCount": 1448,
+      "sharePercent": 4.5942001396027665,
+      "totalFees": "4938533271397875356",
       "issuance": "0",
-      "blockReward": "18250999103627067904",
-      "lastBlock": 128208983
+      "blockReward": "4938533271397875356",
+      "lastBlock": 129445543
     },
     {
-      "producer": "0xf8b99643fafc79d9404de68e48c4d49a3936f787",
-      "label": "Avengers",
+      "producer": "0x37e9627a91dd13e453246856d58797ad6583d762",
+      "label": "LegendII",
       "tags": [
         {
           "title": "Validator",
           "colour": "Accent",
-          "description": "A validator's consensus address: it produces blocks and sends each block's system transactions."
+          "description": "Produces blocks and sends each block's system transactions."
         }
       ],
-      "blockCount": 6072,
-      "sharePercent": 4.384843692454343,
-      "totalFees": "15856885027197169108",
+      "blockCount": 1434,
+      "sharePercent": 4.549781077479535,
+      "totalFees": "17006046366225831878",
       "issuance": "0",
-      "blockReward": "15856885027197169108",
-      "lastBlock": 128209023
+      "blockReward": "17006046366225831878",
+      "lastBlock": 129445015
     }
   ]
 }
@@ -557,10 +557,10 @@ Response `200` (trimmed: `slices` shows 2 of 6)
 ```json
 {
   "available": true,
-  "asOfBlock": 128207534,
+  "asOfBlock": 129442613,
   "evaluatedAt": null,
   "holderCount": 56,
-  "total": "24148770834373050147243207",
+  "total": "24185876730814488517809635",
   "slices": [
     {
       "address": "0xd3b0d838ccceae7ebf1781d11d1bb741db7fe1a7",
@@ -569,11 +569,11 @@ Response `200` (trimmed: `slices` shows 2 of 6)
         {
           "title": "Validator",
           "colour": "Accent",
-          "description": "A validator's consensus address: it produces blocks and sends each block's system transactions."
+          "description": "Produces blocks and sends each block's system transactions."
         }
       ],
-      "amount": "1245617119928016174571939",
-      "share": 0.05158
+      "amount": "1245755838958771709582055",
+      "share": 0.051507
     },
     {
       "address": "0xbdcc079bbb23c1d9a6f36aa31309676c258abac7",
@@ -582,17 +582,17 @@ Response `200` (trimmed: `slices` shows 2 of 6)
         {
           "title": "Validator",
           "colour": "Accent",
-          "description": "A validator's consensus address: it produces blocks and sends each block's system transactions."
+          "description": "Produces blocks and sends each block's system transactions."
         }
       ],
-      "amount": "1148893384610266310271527",
-      "share": 0.047575
+      "amount": "1149024712991218831205358",
+      "share": 0.047508
     }
   ],
   "other": {
     "holderCount": 50,
-    "amount": "17275358861338521428653398",
-    "share": 0.715372
+    "amount": "17329102731836300500364927",
+    "share": 0.716496
   }
 }
 ```
@@ -607,13 +607,13 @@ The groups of named addresses the deployment uses for labels, each with a descri
 curl "https://fsnex.net/api/v1/labels"
 ```
 
-Response `200` (trimmed: the array shows 2 of 12; `description` cut from 279 characters; `addresses` shows 2 of 31)
+Response `200` (trimmed: the array shows 2 of 12; `description` cut from 228 characters; `addresses` shows 2 of 31 and 2 of 4)
 
 ```json
 [
   {
     "name": "Anyswap",
-    "description": "From the original FSNEX explorer's curated labels. Anyswap was a c…",
+    "description": "Anyswap was a cross-chain swap protocol built on Fusion. Every exc…",
     "url": null,
     "addresses": [
       {

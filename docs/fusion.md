@@ -667,7 +667,7 @@ Response `200`
         {
           "title": "Staking pool",
           "colour": "Accent",
-          "description": "A staking pool: it bought tickets with FSN and time-locks taken from many other accounts and produced blocks with them."
+          "description": "Bought tickets with FSN and time locks pooled from many other accounts, and produced blocks with them."
         }
       ],
       "blockNumber": 422674,

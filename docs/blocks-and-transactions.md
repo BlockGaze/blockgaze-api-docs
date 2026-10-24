@@ -248,23 +248,23 @@ Response `200`
   "transactions": [
     {
       "fee": "0",
-      "blockNumber": 128208994,
+      "blockNumber": 129445619,
       "transactionIndex": 58,
-      "hash": "0x02e1514aee227bc4ea22d2a1d62fece25431623836746b9e405644e66fc8052c",
-      "timestamp": 1792257496,
-      "from": "0xbdcc079bbb23c1d9a6f36aa31309676c258abac7",
+      "hash": "0xe342735048fdab6295c3187a21f783d78428356fdaf341a6216705468c311e09",
+      "timestamp": 1792814184,
+      "from": "0x9f1b7fae54be07f4fee34eb1aacb39a1f7b6fc92",
       "to": "0x0000000000000000000000000000000000001000",
-      "fromLabel": "Fuji",
+      "fromLabel": "TWStaking",
       "fromTags": [
         {
           "title": "Validator",
           "colour": "Accent",
-          "description": "A validator's consensus address: it produces blocks and sends each block's system transactions."
+          "description": "Produces blocks and sends each block's system transactions."
         }
       ],
       "toLabel": "Validator Set",
       "toTags": [],
-      "value": "1212097178310679",
+      "value": "1144118968376969",
       "gasUsed": 55345,
       "effectiveGasPrice": "0",
       "succeeded": true,
@@ -274,12 +274,12 @@ Response `200`
     },
     {
       "fee": "0",
-      "blockNumber": 128208994,
+      "blockNumber": 129445619,
       "transactionIndex": 57,
-      "hash": "0xefb2d001ddb55566cb46f4cde6ffdb9a4e13a439670a7140533b365745695502",
-      "timestamp": 1792257496,
-      "from": "0x4848489f0b2bedd788c696e2d79b6b69d7484848",
-      "to": "0x487e5dfe70119c1b320b8219b190a6fa95a5bb48",
+      "hash": "0xd95bb3e1580eb1703b302e4972fa90f5c750d8efb774d7ddd6cd5f34c868649e",
+      "timestamp": 1792814184,
+      "from": "0xc7d4187cbda07f4b5be04418b9723b5faf65db5c",
+      "to": "0x539e24781f616f0d912b60813ab75b7b80b75c53",
       "fromLabel": null,
       "fromTags": [],
       "toLabel": null,
@@ -293,11 +293,11 @@ Response `200`
       "direction": null
     }
   ],
-  "nextCursor": "128208994-57",
+  "nextCursor": "129445619-57",
   "previousCursor": null,
   "total": null,
-  "indexedFromBlock": 127800000,
-  "indexedToBlock": 128208994
+  "indexedFromBlock": 129040000,
+  "indexedToBlock": 129445619
 }
 ```
 
