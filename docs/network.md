@@ -326,7 +326,7 @@ Response `200`
 
 The native currency staked at the end of each UTC day, in wei. Served where `features.stakedHistory` is `true`, which is both deployments.
 
-Each day also carries `rewards`, the block rewards its blocks paid, issuance and gas and native fees together, in wei (issuance is none on BNB Smart Chain), and `annualYield`, those rewards over the day's closing stake times 365, as a fraction: `0.05` is 5%. It is a gross yield, before any commission, burn or system-reward share the chain takes (on BNB Smart Chain, validators' commission and the part of each block's fees that is burned or sent to the system reward contract), so a staker earns less. `annualYield` is `null` for the newest day and the first day the deployment indexed, whose blocks it holds only in part, for a day whose stake or rewards are unknown, and past a millionfold. `rewards` is a part day's on the newest day, which `isPartial` marks, and `null` on the first indexed day, whose stake is whole but whose blocks are not, and for a day the deployment holds no statistics of.
+Each day also carries `rewards`, the block rewards its blocks paid, issuance and gas, native and blob fees together, in wei (issuance is none on BNB Smart Chain, and its blob fees are counted for days indexed since the release that began storing them, on 24 October 2026), and `annualYield`, those rewards over the day's closing stake times 365, as a fraction: `0.05` is 5%. It is a gross yield, before any commission, burn or system-reward share the chain takes (on BNB Smart Chain, validators' commission and the part of each block's fees that is burned or sent to the system reward contract), so a staker earns less. `annualYield` is `null` for the newest day and the first day the deployment indexed, whose blocks it holds only in part, for a day whose stake or rewards are unknown, and past a millionfold. `rewards` is a part day's on the newest day, which `isPartial` marks, and `null` on the first indexed day, whose stake is whole but whose blocks are not, and for a day the deployment holds no statistics of.
 
 | Parameter | Default | Description |
 | --- | --- | --- |
@@ -419,7 +419,7 @@ Response `200` (trimmed: `addresses` shows 3 of 100)
 
 `GET /v1/block-producers`
 
-The addresses that produced blocks over the most recent days, most blocks first, with each producer's `label`, `tags`, block count, share, fees, issuance and total reward in wei. Tags are those [Get an address](addresses.md#get-an-address) lists, in the same order and shape; an untagged address has an empty list.
+The addresses that produced blocks over the most recent days, most blocks first, with each producer's `label`, `tags`, block count, share, fees, issuance and total reward in wei. `totalFees` is what its blocks' transactions paid, gas and native fees and, for days indexed since the release that began storing them on 24 October 2026, blob fees. Tags are those [Get an address](addresses.md#get-an-address) lists, in the same order and shape; an untagged address has an empty list.
 
 | Parameter | Default | Description |
 | --- | --- | --- |
@@ -481,7 +481,7 @@ Response `200` (trimmed: `producers` shows 2 of 45)
 
 `GET /v1/block-producers/{address}/daily`
 
-One producer's blocks and rewards per UTC day.
+One producer's blocks and rewards per UTC day. A day's `reward` is its issuance plus its gas, native and blob fees, blob fees counted for days indexed since the release that began storing them on 24 October 2026.
 
 | Parameter | Default | Description |
 | --- | --- | --- |
